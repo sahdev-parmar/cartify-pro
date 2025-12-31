@@ -14,7 +14,6 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
 </head>
 <body class="font-sans antialiased">
     <div class="flex h-screen justify-center dark:bg-gray-900">
@@ -35,17 +34,20 @@
 
                 <!-- Logo & Title -->
                 <div class="text-center">
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 mb-6 shadow-lg">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
+                    <div class="inline-flex items-center justify-center w-20 h-20 mb-6 ">
+                        <img src="{{ asset('favicon.ico')}}" alt="icon" class="rounded-lg ">
                     </div>
                     <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">Welcome back</h2>
                     <p class="text-gray-600 dark:text-gray-400">Sign in to your admin account</p>
                 </div>
 
-                <!-- Login Form -->
-                <form class="mt-8 space-y-6" method="POST" action="/admin/login">
+                @error('invalid')
+                    <div class="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-600">
+                        <h2>{{ $message }}</h2>
+                    </div>
+                @enderror
+                                <!-- Login Form -->
+                <form class="mt-8 space-y-6" method="POST" action="{{route('admin.login-post')}}">
                     @csrf
                     
                     <div class="space-y-4">
@@ -65,7 +67,6 @@
                                     name="email" 
                                     type="email" 
                                     autocomplete="email" 
-                                    required 
                                     class="block w-full pl-12 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all @error('email') border-red-500 @enderror"
                                     placeholder="admin@example.com"
                                     value="{{ old('email') }}"
@@ -92,7 +93,6 @@
                                     name="password" 
                                     :type="showPassword ? 'text' : 'password'" 
                                     autocomplete="current-password" 
-                                    required 
                                     class="block w-full pl-12 pr-12 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all @error('password') border-red-500 @enderror"
                                     placeholder="••••••••"
                                 >
@@ -151,16 +151,6 @@
                             Sign in to Dashboard
                         </button>
                     </div>
-
-                    <!-- Register Link -->
-                    <div class="text-center">
-                        <p class="text-sm text-gray-600 dark:text-gray-400">
-                            Don't have an account? 
-                            <a href="/admin/register" class="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
-                                Create one now
-                            </a>
-                        </p>
-                    </div>
                 </form>
 
                 <!-- Divider -->
@@ -194,7 +184,6 @@
       
     </div>
 
-    @livewireScripts
     
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 

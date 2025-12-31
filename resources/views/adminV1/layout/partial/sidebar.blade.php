@@ -84,7 +84,7 @@
                 <p class="text-xs text-gray-500 dark:text-gray-400 truncate">admin@example.com</p>
             </div>
         </div>
-        <form method="POST" action="/admin/logout">
+        <form method="POST" action="{{route('admin.logout')}}">
             @csrf
             <button type="submit" class="w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors dark:text-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600">
                 Logout
