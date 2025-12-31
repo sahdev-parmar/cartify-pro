@@ -15,7 +15,7 @@
     <!-- Scripts -->
 
     @yield('style')
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite('resources/css/app.css')
     @livewireStyles
 </head>
 <body class="font-sans antialiased bg-gray-50 dark:bg-gray-900">
