@@ -2,12 +2,10 @@
     <!-- Logo -->
     <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-700">
         <a href="/admin/dashboard" class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                </svg>
+            <div class="w-15 h-15 flex items-center justify-center">
+               <img src="{{asset('favicon.ico')}}" alt="icon" class="rounded-lg">
             </div>
-            <span class="text-xl font-bold text-gray-900 dark:text-white">AdminHub</span>
+            <span class="text-xl font-bold text-gray-900 dark:text-white">Admin Dashboard</span>
         </a>
     </div>
 
@@ -37,7 +35,7 @@
             <div x-show="open" x-collapse class="mt-1 ml-8 space-y-1">
                 <a href="/admin/products" class="block px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">All Products</a>
                 <a href="/admin/products/create" class="block px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">Add Product</a>
-                <a href="/admin/categories" class="block px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">Categories</a>
+                <a href="{{route('admin.category.index')}}" class="block px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">Categories</a>
             </div>
         </div>
 
@@ -78,10 +76,10 @@
     <!-- User Profile -->
     <div class="p-4 border-t border-gray-200 dark:border-gray-700">
         <div class="flex items-center space-x-3 mb-3">
-            <img src="https://ui-avatars.com/api/?name=Admin+User&background=3b82f6&color=fff" alt="Admin User" class="w-10 h-10 rounded-full">
+        <img src="{{auth()->user()->image ??  'https://ui-avatars.com/api/?name=Admin+User&background=3b82f6&color=fff' }}" alt="Admin User" class="w-10 h-10 rounded-full">
             <div class="flex-1 min-w-0">
                 <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Admin User</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400 truncate">admin@example.com</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{auth()->user()->email}}</p>
             </div>
         </div>
         <form method="POST" action="{{route('admin.logout')}}">

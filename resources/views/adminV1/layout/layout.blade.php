@@ -30,6 +30,7 @@
 
             <!-- Page Content -->
             <main class="flex-1 overflow-y-auto p-8">
+                {{ $slot ?? '' }}
                 @yield('content')
             </main>
         </div>

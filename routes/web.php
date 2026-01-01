@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminauthController;
+use App\Livewire\Admin\Categories\CategoryIndex;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,6 +17,7 @@ Route::prefix('admin')->middleware(['admin-login:login'])->group(function (){
 Route::prefix('admin')->middleware(['admin-login:dashboard'])->group(function (){
   
     Route::view('dashboard','adminV1.dashboard')->name('admin.dashboard');
+    Route::get('category',CategoryIndex::class)->name('admin.category.index');
 });
 
 Route::view('/test','test');

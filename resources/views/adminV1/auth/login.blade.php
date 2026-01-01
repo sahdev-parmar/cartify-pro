@@ -34,11 +34,11 @@
 
                 <!-- Logo & Title -->
                 <div class="text-center">
-                    <div class="inline-flex items-center justify-center w-20 h-20 mb-6 ">
+                    <div class="inline-flex items-center justify-center w-40 h-40 mb-6 ">
                         <img src="{{ asset('favicon.ico')}}" alt="icon" class="rounded-lg ">
                     </div>
                     <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">Welcome back</h2>
-                    <p class="text-gray-600 dark:text-gray-400">Sign in to your admin account</p>
+                    <p class="text-gray-600 dark:text-gray-400">Sign in to your admin dashboard</p>
                 </div>
 
                 @error('invalid')
