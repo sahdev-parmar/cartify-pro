@@ -33,8 +33,8 @@
                 </svg>
             </button>
             <div x-show="open" x-collapse class="mt-1 ml-8 space-y-1">
-                <a href="/admin/products" class="block px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">All Products</a>
-                <a href="/admin/products/create" class="block px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">Add Product</a>
+                <a href="{{ route('admin.product.index') }}" class="block px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">All Products</a>
+                <a href="{{ route('admin.product.add') }}" class="block px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">Add Product</a>
                 <a href="{{route('admin.category.index')}}" class="block px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">Categories</a>
             </div>
         </div>

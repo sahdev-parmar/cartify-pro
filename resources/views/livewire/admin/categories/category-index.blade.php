@@ -5,7 +5,7 @@
     <div class="space-y-6">
         <!-- Success Message -->
         @if (session()->has('message'))
-            <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4">
+            <div class="bg-green-50 absolute right-[10px] top-[10px] w-100 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4" wire:poll.2s>
                 <div class="flex items-center">
                     <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -15,13 +15,17 @@
             </div>
         @endif
 
-        <!-- Header with Add Button -->
-        <div class="flex items-center justify-between">
-            <div>
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Categories</h2>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage your product categories</p>
-            </div>
-            <button wire:click="openAddModal" class="flex items-center px-4 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg">
+        {{-- page title --}}
+        @section('page-title')
+        <div class="py-4">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Categories</h2>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage your product categories</p>
+        </div>
+        @endsection
+
+        {{-- category add button --}}
+        <div class="flex justify-end">
+            <button wire:click="openModal" class="flex px-4 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
@@ -50,14 +54,9 @@
                     <div class="flex items-center space-x-2">
                         <select wire:model.live="statusFilter" class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="all">All Status</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
                         </select>
-                        <button class="p-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                            <svg class="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
-                            </svg>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -115,7 +114,7 @@
                                     <div class="text-xs text-gray-500 dark:text-gray-400">{{ date('h:i A', strtotime($category['created_at'])) }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <button 
+                                    <button type="button"   
                                         wire:click="toggleStatus({{ $category['id'] }})"
                                         class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold transition-colors
                                             {{ $category['status'] === 1 
@@ -124,9 +123,11 @@
                                             }}"
                                     >
                                         <span class="w-2 h-2 rounded-full mr-2 {{ $category['status'] === 1 ? 'bg-green-500 dark:bg-green-400' : 'bg-red-500 dark:bg-red-400' }}"></span>
-                                        {{ ucfirst($category['status']) }}
+                                        {{ ($category['status'] ? 'active' : 'inactive') }}
                                     </button>
                                 </td>
+
+                                {{-- edit --}}
                                 <td class="px-6 py-4 whitespace-nowrap text-right">
                                     <div class="flex items-center justify-end space-x-2">
                                         <button wire:click="editCategory({{ $category['id'] }})" class="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors" title="Edit">
@@ -134,9 +135,10 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                             </svg>
                                         </button>
+
+                                        {{-- delete  --}}
                                         <button 
                                             wire:click="deleteCategory({{ $category['id'] }})"
-                                            wire:confirm="Are you sure you want to delete this category?"
                                             class="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors" 
                                             title="Delete"
                                         >
@@ -164,27 +166,8 @@
             </div>
 
             <!-- Table Footer / Pagination -->
-            <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
-                <div class="text-sm text-gray-600 dark:text-gray-400">
-                    Showing <span class="font-semibold text-gray-900 dark:text-white">1</span> to <span class="font-semibold text-gray-900 dark:text-white">{{ count($categories) }}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{ count($categories) }}</span> categories
-                </div>
-                <div class="flex items-center space-x-2">
-                    <button class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                        Previous
-                    </button>
-                    <button class="px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-lg">
-                        1
-                    </button>
-                    <button class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
-                        2
-                    </button>
-                    <button class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
-                        3
-                    </button>
-                    <button class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
-                        Next
-                    </button>
-                </div>
+            <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 " >
+                {{ $categories->links() }}
             </div>
         </div>
     </div>
@@ -194,3 +177,42 @@
         @include('livewire.admin.categories.categoryModal')
     @endif
 </div>
+@script
+<script>
+    window.addEventListener('confirmMessage', event => { 
+        Swal.fire({
+        title: "Are you sure?",
+        text: event.detail.text,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+        if (result.isConfirmed) {
+            $wire.$call('Confirmdelete') // call function
+        }
+        });
+    });
+
+    window.addEventListener('doneMessage', event => {
+
+        const isDark = $('html').hasClass('dark');
+        Swal.fire({
+            title: event.detail.title,
+            text: event.detail.text,
+            icon: "success",
+            background: isDark ? '#0f172a' : '#ffffff',
+            color:       isDark ? '#22c55e' : '#0f172a',
+            iconColor:   isDark ? '#22c55e' : '#16a34a',
+            confirmButtonText: 'OK',
+            confirmButtonColor: isDark ? '#2563eb' : '#3b82f6',
+            customClass: {
+                popup: 'rounded-xl',
+                title: isDark ? 'text-green-400' : 'text-green-700',
+                confirmButton: 'text-white font-semibold'
+            }
+        });
+    }); 
+</script>
+@endscript

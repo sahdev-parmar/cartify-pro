@@ -97,11 +97,11 @@
                         <div class="w-48 h-32 border-2 border-dashed border-gray-300
                                     flex items-center justify-center rounded-md bg-gray-50">
 
-                            @if ($image)
+                            @if ($image || $categoryimage)
                                 <img src=" 
                                 {{-- exception handling --}}
                             <?php try{ ?> 
-                            {{ $image ? $image->temporaryurl()  : asset('storage/uploads/'.$categoryimage) }}
+                            {{ $image ? $image->temporaryurl()  : asset('storage/uploads/category/'.$categoryimage) }}
                             <?php }catch(\Exception $e){ ?>
                                 {{ '' }}
                             <?php } ?>"
