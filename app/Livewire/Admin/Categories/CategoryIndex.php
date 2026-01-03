@@ -58,7 +58,7 @@ class CategoryIndex extends Component
     {
         $this->validate([
             'name' => 'required',
-            'slug' => 'required',
+            'slug' => 'required|unique:categories,slug',
             'description' => 'nullable',
             'image' => $this->categoryId ? 'nullable' : 'required'.'|image|mimes:jpeg,png,jpg',
             'status' => 'required|integer'

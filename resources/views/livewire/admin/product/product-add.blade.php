@@ -1,18 +1,15 @@
 <div>
-    <div class="max-w-4xl mx-auto py-8 px-4">
-        <!-- Header -->
-        <div class="mb-8">
-            <div class="flex items-center space-x-3 mb-4">
-                <a href="/admin/products" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                </a>
-                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Add New Product</h1>
-            </div>
-            <p class="text-gray-600 dark:text-gray-400">Fill in the details to add a new product to your inventory</p>
+    @section('title','Add-Product')
+    @section('page-title')
+    <div>
+        <div class="flex items-center space-x-3 ">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Add New Product</h1>
         </div>
-
+        <p class="text-gray-600 text-xl dark:text-gray-400">Fill in the details to add a new product to your inventory</p>
+    </div>
+    @endsection
+    
+    <div class="max-w-4xl mx-auto    px-4">
         <!-- Wizard Progress -->
         <div class="mb-8">
             <div class="flex items-center justify-between">
@@ -77,7 +74,7 @@
 
         <!-- Wizard Content -->
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <form wire:submit.prevent="save">
+            <form wire:submit.prevent="save" enctype="multipart/form-data">
                 <!-- Step 1: Basic Information -->
                 @if($currentStep === 1)
                     <div class="p-8 space-y-6">
@@ -105,38 +102,56 @@
                             @enderror
                         </div>
 
-                        <!-- Product Name -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                Product Name <span class="text-red-500">*</span>
-                            </label>
-                            <input 
-                                type="text" 
-                                wire:model.live="name"
-                                placeholder="Enter product name"
-                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('name') border-red-500 @enderror"
-                            >
-                            @error('name')
-                                <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        <div class="grid grid-cols-2 gap-5">
+                            <!-- Product Name -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                    Product Name <span class="text-red-500">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    wire:model.live="name"
+                                    placeholder="Enter product name"
+                                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('name') border-red-500 @enderror"
+                                >
+                                @error('name')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
 
-                        <!-- Slug -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                Slug <span class="text-red-500">*</span>
-                            </label>
-                            <input 
-                                type="text" 
-                                wire:model="slug"
-                                placeholder="product-slug"
-                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('slug') border-red-500 @enderror"
-                            >
-                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Auto-generated from product name</p>
-                            @error('slug')
-                                <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
+                            <!-- Slug -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                    Slug <span class="text-red-500">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    wire:model="slug"
+                                    placeholder="product-slug"
+                                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('slug') border-red-500 @enderror"
+                                >
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Auto-generated from product name</p>
+                                @error('slug')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
+                    <!-- Description -->
+                    <div>
+                        <label for="description" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            Description <span class="text-red-500">*</span>
+                        </label>
+                        <textarea 
+                            id="description"
+                            wire:model="description"
+                            rows="4"
+                            class="block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('description') border-red-500 @enderror"
+                            placeholder="Enter product description"
+                        ></textarea>
+                        @error('description')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
                     </div>
                 @endif
 
@@ -158,6 +173,7 @@
                                     type="file" 
                                     wire:model="images"
                                     multiple
+                                    name="images[]"
                                     accept="image/*"
                                     class="hidden"
                                     id="imageUpload"
@@ -211,26 +227,25 @@
 
                       
 
-                            <!-- Sale Price -->
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                    Sale Price (Optional)
-                                </label>
-                                <div class="relative">
-                                    <span class="absolute left-4 top-3.5 text-gray-500 dark:text-gray-400">$</span>
-                                    <input 
-                                        type="number" 
-                                        step="0.01"
-                                        wire:model="sale_price"
-                                        placeholder="0.00"
-                                        class="w-full pl-8 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('sale_price') border-red-500 @enderror"
-                                    >
-                                </div>
-                                @error('sale_price')
-                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                @enderror
+                            <!-- Price -->
+                           <div>
+                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                Regular Price <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-3.5 text-gray-500 dark:text-gray-400">₹</span>
+                                <input 
+                                    type="number" 
+                                    step="0.01"
+                                    wire:model="price"
+                                    placeholder="0.00"
+                                    class="w-full pl-8 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('price') border-red-500 @enderror"
+                                >
                             </div>
-                    </div>
+                            @error('price')
+                                <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
                 @endif
 
                 <!-- Step 3: Stock & Final -->
@@ -251,9 +266,9 @@
                                     wire:model="stock_status"
                                     class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('stock_status') border-red-500 @enderror"
                                 >
-                                    <option value="in_stock">In Stock</option>
-                                    <option value="low_stock">Low Stock</option>
-                                    <option value="out_of_stock">Out of Stock</option>
+                                    <option >---Select-Stock-status---</option>
+                                    <option value=1>In Stock</option>
+                                    <option value=0>Out of Stock</option>
                                 </select>
                                 @error('stock_status')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -299,7 +314,7 @@
                                 <div class="flex justify-between">
                                     <span class="text-gray-600 dark:text-gray-400">Price:</span>
                                     <span class="font-semibold text-gray-900 dark:text-white">
-                                        ${{ $price ?: '0.00' }}
+                                        ₹{{ $price ?: '0.00' }}
                                     </span>
                                 </div>
                             </div>

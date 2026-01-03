@@ -21,7 +21,7 @@
             </div>
         @endsection
 
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-end">
             <a href="{{ route('admin.product.add') }}" class="flex items-center px-4 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -105,6 +105,7 @@
                                         >
                                         <div class="max-w-xs">
                                             <p class="text-sm font-semibold text-gray-900 dark:text-white truncate">{{ $product->name }}</p>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">{{ $product->slug }}</div>
                                         </div>
                                     </div>
                                 </td>
@@ -123,12 +124,7 @@
                                 <!-- Price -->
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex flex-col">
-                                        @if($product->hasSalePrice())
-                                            <span class="text-sm font-bold text-green-600 dark:text-green-400">${{ number_format($product->sale_price, 2) }}</span>
-                                            <span class="text-xs text-gray-400 line-through">${{ number_format($product->price, 2) }}</span>
-                                        @else
-                                            <span class="text-sm font-bold text-gray-900 dark:text-white">${{ number_format($product->price, 2) }}</span>
-                                        @endif
+                                        <span class="text-sm font-bold text-gray-900 dark:text-white">${{ number_format($product->price, 2) }}</span>
                                     </div>
                                 </td>
 

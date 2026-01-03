@@ -16,7 +16,11 @@ class Productindex extends Component
     {
         $categories = Category::all();
 
-        $products = Product::latest()->paginate(10);
+        $products = Product::with('category')
+            ->whereHas('category', fn ($q) => $q->where('status', 1))
+            ->latest()
+            ->paginate(10);
+
         return view('livewire.admin.product.productindex',[
             'categories' => $categories,
             'products' => $products
