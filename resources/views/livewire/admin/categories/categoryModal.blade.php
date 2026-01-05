@@ -1,6 +1,6 @@
 <div class="fixed inset-0 z-50 overflow-y-auto">
     <!-- Dark Backdrop Overlay -->
-    <div class="fixed inset-0  backdrop-blur-xs  transition-opacity" wire:click="closeModal"></div>
+    <div class="fixed inset-0  backdrop-blur-lg  bg-black/80 transition-opacity" wire:click="closeModal"></div>
     
     <!-- Modal Container -->
     <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center">
