@@ -22,17 +22,17 @@
 
                 <!-- Modal Body -->
                 <div class="px-6 py-6 max-h-[calc(100vh-200px)] overflow-y-auto">
-                    <form wire:submit.prevent="updateProduct">
+                    <form wire:submit.prevent="updateProduct" enctype="multipart/form-data">
                         <div class="space-y-6">
                             <!-- Row 1: Category and Name -->
-                            <div class="grid grid-cols-2 gap-6">
+                            <div class="grid grid-cols-8 gap-6">
                                 <!-- Category -->
-                                <div>
+                                <div class="col-span-2">
                                     <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                                         Category <span class="text-red-500">*</span>
                                     </label>
                                     <select 
-                                        wire:model="edit_category_id"
+                                        wire:model="category_id"
                                         class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 @error('edit_category_id') border-red-500 @enderror"
                                     >
                                         <option value="">Select a category</option>
@@ -40,67 +40,168 @@
                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                                         @endforeach
                                     </select>
-                                    @error('edit_category_id')
+                                    @error('category_id')
                                         <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                     @enderror
                                 </div>
 
+
                                 <!-- Product Name -->
-                                <div>
+                                <div class="col-span-3">
                                     <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                                         Product Name <span class="text-red-500">*</span>
                                     </label>
                                     <input 
                                         type="text" 
-                                        wire:model.live="edit_name"
+                                        wire:model.live="name"
                                         placeholder="Enter product name"
                                         class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 @error('edit_name') border-red-500 @enderror"
                                     >
-                                    @error('edit_name')
+                                    @error('name')
+                                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <!-- Slug -->
+                                <div class="col-span-3"> 
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                        Slug <span class="text-red-500">*</span>
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        wire:model="slug"
+                                        placeholder="product-slug"
+                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 @error('edit_slug') border-red-500 @enderror"
+                                    >
+                                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Auto-generated from product name</p>
+                                    @error('slug')
                                         <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                     @enderror
                                 </div>
                             </div>
 
-                            <!-- Slug -->
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                    Slug <span class="text-red-500">*</span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    wire:model="edit_slug"
-                                    placeholder="product-slug"
-                                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 @error('edit_slug') border-red-500 @enderror"
-                                >
-                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Auto-generated from product name</p>
-                                @error('edit_slug')
-                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                @enderror
+                             <!-- Row 2: Pricing -->
+                            <div class="grid grid-cols-3 gap-6">
+                             
+                                <!-- Price -->
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                        Regular Price <span class="text-red-500">*</span>
+                                    </label>
+                                    <div class="relative">
+                                        <span class="absolute left-4 top-3.5 text-gray-500 dark:text-gray-400">$</span>
+                                        <input 
+                                            type="number" 
+                                            step="0.01"
+                                            wire:model="price"
+                                            placeholder="0.00"
+                                            class="w-full pl-8 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 @error('edit_price') border-red-500 @enderror"
+                                        >
+                                    </div>
+                                    @error('price')
+                                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                     <!-- Stock Status -->
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                        Stock Status <span class="text-red-500">*</span>
+                                    </label>
+                                    <select 
+                                        wire:model="stock_status"
+                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 @error('edit_stock_status') border-red-500 @enderror"
+                                    >
+                                        <option>---Select stock status---</option>
+                                        <option value=1>In Stock</option>
+                                        <option value=0>Out of Stock</option>
+                                    </select>
+                                    @error('stock_status')
+                                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                    @enderror
+                                </div> 
+                                
+                                  <!-- Sales Count -->
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                        Sales Count <span class="text-red-500">*</span>
+                                    </label>
+                                    <input 
+                                        type="number" 
+                                        wire:model="sales_count"
+                                        placeholder="0"
+                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 @error('edit_sales_count') border-red-500 @enderror"
+                                    >
+                                    @error('sales_count')
+                                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
+
 
                             <!-- Images Section -->
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Product Images</label>
                                 
                                 <!-- Existing Images -->
-                                @if(!empty($existing_images))
+                                @if(!empty($images) || !empty($previwImages))
                                     <div class="mb-4">
                                         <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">Current Images</p>
                                         <div class="grid grid-cols-6 gap-3">
-                                            @foreach($existing_images as $image)
+                                            @foreach($images as $index => $image)
                                                 <div class="relative group">
-                                                    <img src="{{ asset('storage/' . $image['image_path']) }}" class="w-full h-24 object-cover rounded-lg border-2 border-gray-200 dark:border-gray-700">
+                                                    <img src="{{ asset('storage/uploads/product/' . $image) }}" class="w-full h-24 object-cover rounded-lg border-2 border-gray-200 dark:border-gray-700">
+
+                                                    {{-- remove images --}}
                                                     <button 
                                                         type="button"
-                                                        wire:click="removeExistingImage({{ $image['id'] }})"
+                                                        wire:click="removeImage({{ $index }})"
                                                         class="absolute -top-2 -right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
                                                     >
                                                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                                         </svg>
                                                     </button>
-                                                    @if($image['is_primary'])
+
+                                                    {{-- Make Primary Button --}}
+                                                    @if($index !== $primaryImageIndex)
+                                                        <button
+                                                            type="button"
+                                                            wire:click="makePrimary({{ $index }})"
+                                                            class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-2 py-1 rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-blue-600"
+                                                        >
+                                                            Primary
+                                                        </button>
+                                                    @endif
+                                                    @if($index === $primaryImageIndex && !$previwPrimarychange)
+                                                        <span class="absolute bottom-1 left-1 bg-blue-600 text-white text-xs px-2 py-0.5 rounded">Primary</span>
+                                                    @endif
+                                                </div>
+                                            @endforeach
+
+                                            {{-- previwimage --}}
+                                            @foreach($previwImages as $index => $image)
+                                                <div class="relative group">
+                                                    <img src="{{ $image->temporaryUrl() }}" class="w-full h-24 object-cover rounded-lg border-2 border-gray-200 dark:border-gray-700">
+                                                    <button 
+                                                        type="button"
+                                                        wire:click="removePreviewImage({{ $index }})"
+                                                        class="absolute -top-2 -right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                                    >
+                                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                        </svg>
+                                                    </button>
+                                                    @if($index !== $primaryPreviewIndex)
+                                                        <button
+                                                            type="button"
+                                                            wire:click="makePreviewPrimary({{ $index }})"
+                                                            class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-2 py-1 rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-blue-600"
+                                                        >
+                                                            Primary
+                                                        </button>
+                                                    @endif
+                                                    @if($previwPrimarychange && $index === $primaryPreviewIndex)
                                                         <span class="absolute bottom-1 left-1 bg-blue-600 text-white text-xs px-2 py-0.5 rounded">Primary</span>
                                                     @endif
                                                 </div>
@@ -113,7 +214,7 @@
                                 <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-green-500 transition-colors">
                                     <input 
                                         type="file" 
-                                        wire:model="edit_images"
+                                        wire:model.live="previwImages"
                                         multiple
                                         accept="image/*"
                                         class="hidden"
@@ -124,140 +225,34 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                                         </svg>
                                         <p class="text-sm text-gray-600 dark:text-gray-400">
-                                            <span class="text-green-600 dark:text-green-400 font-semibold">Click to upload</span> or drag and drop
+                                            <span class="text-green-600 dark:text-green-400 font-semibold">Click to upload</span>
                                         </p>
-                                        <p class="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 2MB each</p>
+                                        <p class="text-xs text-gray-500 mt-1">PNG, JPG, GIF</p>
                                     </label>
                                 </div>
 
-                                @error('edit_images.*')
+                                @error('images.*')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
-
-                                <!-- New Images Preview -->
-                                @if(!empty($edit_images))
-                                    <div class="grid grid-cols-6 gap-3 mt-3">
-                                        @foreach($edit_images as $index => $image)
-                                            <div class="relative group">
-                                                <img src="{{ $image->temporaryUrl() }}" class="w-full h-24 object-cover rounded-lg border-2 border-green-500">
-                                                <button 
-                                                    type="button"
-                                                    wire:click="removeNewImage({{ $index }})"
-                                                    class="absolute -top-2 -right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
-                                                >
-                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                    </svg>
-                                                </button>
-                                                <span class="absolute bottom-1 left-1 bg-green-600 text-white text-xs px-2 py-0.5 rounded">New</span>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                @endif
-
-                                <div wire:loading wire:target="edit_images" class="mt-3 text-center">
-                                    <div class="flex items-center justify-center space-x-2 text-green-600 dark:text-green-400">
-                                        <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                        <span class="text-sm">Uploading images...</span>
-                                    </div>
-                                </div>
                             </div>
 
-                            <!-- Row 2: Pricing -->
-                            <div class="grid grid-cols-2 gap-6">
-                                <!-- Regular Price -->
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                        Regular Price <span class="text-red-500">*</span>
-                                    </label>
-                                    <div class="relative">
-                                        <span class="absolute left-4 top-3.5 text-gray-500 dark:text-gray-400">$</span>
-                                        <input 
-                                            type="number" 
-                                            step="0.01"
-                                            wire:model="edit_price"
-                                            placeholder="0.00"
-                                            class="w-full pl-8 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 @error('edit_price') border-red-500 @enderror"
-                                        >
-                                    </div>
-                                    @error('edit_price')
-                                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <!-- Sale Price -->
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                        Sale Price (Optional)
-                                    </label>
-                                    <div class="relative">
-                                        <span class="absolute left-4 top-3.5 text-gray-500 dark:text-gray-400">$</span>
-                                        <input 
-                                            type="number" 
-                                            step="0.01"
-                                            wire:model="edit_sale_price"
-                                            placeholder="0.00"
-                                            class="w-full pl-8 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 @error('edit_sale_price') border-red-500 @enderror"
-                                        >
-                                    </div>
-                                    @error('edit_sale_price')
-                                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-
+                           
                             <!-- Row 3: Stock -->
-                            <div class="grid grid-cols-3 gap-6">
-                                <!-- Stock Quantity -->
+                            <div>
+                                {{-- Description --}}
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                        Stock Quantity <span class="text-red-500">*</span>
+                                    <label for="description" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                        Description <span class="text-red-500">*</span>
                                     </label>
-                                    <input 
-                                        type="number" 
-                                        wire:model="edit_stock_quantity"
-                                        placeholder="0"
-                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 @error('edit_stock_quantity') border-red-500 @enderror"
-                                    >
-                                    @error('edit_stock_quantity')
-                                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <!-- Stock Status -->
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                        Stock Status <span class="text-red-500">*</span>
-                                    </label>
-                                    <select 
-                                        wire:model="edit_stock_status"
-                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 @error('edit_stock_status') border-red-500 @enderror"
-                                    >
-                                        <option value="in_stock">In Stock</option>
-                                        <option value="low_stock">Low Stock</option>
-                                        <option value="out_of_stock">Out of Stock</option>
-                                    </select>
-                                    @error('edit_stock_status')
-                                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <!-- Sales Count -->
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                        Sales Count <span class="text-red-500">*</span>
-                                    </label>
-                                    <input 
-                                        type="number" 
-                                        wire:model="edit_sales_count"
-                                        placeholder="0"
-                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 @error('edit_sales_count') border-red-500 @enderror"
-                                    >
-                                    @error('edit_sales_count')
-                                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                    <textarea 
+                                        id="description"
+                                        wire:model="description"
+                                        rows="4"
+                                        class="block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('description') border-red-500 @enderror"
+                                        placeholder="Enter product description"
+                                    ></textarea>
+                                    @error('description')
+                                        <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                     @enderror
                                 </div>
                             </div>

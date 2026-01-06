@@ -36,7 +36,7 @@
                     <div class="space-y-4">
                         <!-- Name & SKU -->
                         <div>
-                            <h2 class="text-2xl font-semibold  text-gray-900 dark:text-white">{{ $selectedProduct->name }}</h2>
+                            <h2 class="text-2xl font-semibold  bg-blue-100 rounded-lg ps-2 text-gray-900 dark:text-white">{{ $selectedProduct->name }}</h2>
                              <div class="max-w-xs">
                                 <div class="text-xs text-gray-500 dark:text-gray-400">{{ $selectedProduct->slug }}</div>
                             </div>
