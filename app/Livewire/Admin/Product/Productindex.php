@@ -17,15 +17,23 @@ class Productindex extends Component
 
     public $showViewModal,$selectedProduct;
     public $showEditModal = false;
+    public $deleteId;
+    public $search,$stockFilter = 'all',$categoryFilter = 'all';
 
     public function render()
     {
         $categories = Category::all();
 
-        $products = Product::with('category')
-            ->whereHas('category', fn ($q) => $q->where('status', 1))
-            ->latest()
-            ->paginate(10);
+        $products = Product::latest()->where('name', 'like', '%'.$this->search.'%');
+            if($this->stockFilter != 'all'){ 
+                $products->whereStock_status($this->stockFilter);
+            }
+            
+            if($this->categoryFilter != 'all'){
+                $products->whereCategory_id($this->categoryFilter);
+            }
+        
+        $products = $products->paginate(10);
 
         return view('livewire.admin.product.productindex',[
             'categories' => $categories,
@@ -33,6 +41,11 @@ class Productindex extends Component
         ]);
     }
 
+    public function  resetFilters()
+    {
+        $this->reset('search','stockFilter','categoryFilter');
+    }
+    
     public function viewProduct($id)
     {
         $this->showViewModal = true;
@@ -54,5 +67,18 @@ class Productindex extends Component
     public function closeEditModal()
     {
         $this->showEditModal = false;
+    }
+
+    public function deleteProduct($id){
+        $this->deleteId = $id;
+        $this->dispatch('confirmMessage',text: 'You Want To Delete This Product!');
+    }
+    
+    public function Confirmdelete()
+    {
+        Product::find($this->deleteId)->delete();
+        $this->dispatch('doneMessage',text: 'Succesfully Delete Product!',title : 'Deleted!');
+        $this->deleteId = null;
+
     }
 }

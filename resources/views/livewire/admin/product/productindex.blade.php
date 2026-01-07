@@ -22,9 +22,12 @@
         @endsection
 
         <div class="flex items-center justify-between">
+            
+            {{-- reser filter --}}
             <button wire:click="resetFilters" class="flex items-center px-4 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg">
                 Reset Filters
             </button>
+
             <a href="{{ route('admin.product.add') }}" class="flex items-center px-4 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -68,9 +71,8 @@
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Stock Status</label>
                     <select wire:model.live="stockFilter" class="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="all">All Stock</option>
-                        <option value="in_stock">In Stock</option>
-                        <option value="low_stock">Low Stock</option>
-                        <option value="out_of_stock">Out of Stock</option>
+                        <option value=1>In Stock</option>
+                        <option value=0>Out of Stock</option>
                     </select>
                 </div>
             </div>
@@ -139,7 +141,7 @@
                                         @if($product->stock_status === 1)
                                             <span class="text-sm text-white font-semibold text-center rounded-full bg-green-600">In Stock</span>
                                         @else
-                                            <span class="text-sm text-center rounded-full bg-red-600">Out of Stock</span>
+                                            <span class="text-sm text-white font-semibold text-center rounded-full bg-red-600">Out of Stock</span>
                                         @endif
                                     </div>
                                 </td>
@@ -166,7 +168,6 @@
                                         {{-- delete --}}
                                         <button 
                                             wire:click="deleteProduct({{ $product->id }})"
-                                            wire:confirm="Are you sure you want to delete this product?"
                                             class="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors" 
                                             title="Delete"
                                         >
@@ -210,3 +211,42 @@
 
     </div>
 </div>
+@script
+<script>
+    window.addEventListener('confirmMessage', event => { 
+        Swal.fire({
+        title: "Are you sure?",
+        text: event.detail.text,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+        if (result.isConfirmed) {
+            $wire.$call('Confirmdelete') // call function
+        }
+        });
+    });
+
+    window.addEventListener('doneMessage', event => {
+
+        const isDark = $('html').hasClass('dark');
+        Swal.fire({
+            title: event.detail.title,
+            text: event.detail.text,
+            icon: "success",
+            background: isDark ? '#0f172a' : '#ffffff',
+            color:       isDark ? '#22c55e' : '#0f172a',
+            iconColor:   isDark ? '#22c55e' : '#16a34a',
+            confirmButtonText: 'OK',
+            confirmButtonColor: isDark ? '#2563eb' : '#3b82f6',
+            customClass: {
+                popup: 'rounded-xl',
+                title: isDark ? 'text-green-400' : 'text-green-700',
+                confirmButton: 'text-white font-semibold'
+            }
+        });
+    }); 
+</script>
+@endscript

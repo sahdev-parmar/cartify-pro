@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Product;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -84,6 +85,7 @@ class ProductEdit extends Component
     public function updateProduct()
     {
         $product = Product::find($this->productId);
+
         if($this->ImagePrimarychange){
             [$this->images[0], $this->images[$this->primaryImageIndex]] = 
             [$this->images[$this->primaryImageIndex], $this->images[0]];
@@ -116,7 +118,31 @@ class ProductEdit extends Component
             
         }
 
-        dd($this->images);
+        $this->validate([
+            'category_id' => 'required|integer',
+            'name' => 'required',
+            'slug' => ['required',Rule::unique('products', 'slug')->ignore($product->id)],
+            'description' => 'required',
+            'previwImages.*' => 'image',
+            'price' => 'required',
+            'stock_status' => 'required|integer',
+            'sales_count' => 'required|integer'
+        ]);
+
+        $product->update([
+            'name' => $this->name,
+            'slug' => $this->slug,
+            'category_id' => $this->category_id,
+            'stock_status' => $this->stock_status,
+            'sales_count' => $this->sales_count,
+            'price' => $this->price,
+            'description' => $this->description,
+            'images' => implode(',',$this->images)
+        ]);
+
+        sleep(1);
+        $this->dispatch('closeEditModal'); //pass to index livewire component
+        $this->reset();
 
     }
 }
