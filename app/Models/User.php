@@ -6,6 +6,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Nnjeim\World\Models\City;
+use Nnjeim\World\Models\Country;
+use Nnjeim\World\Models\State;
 
 class User extends Authenticatable
 {
@@ -22,7 +25,13 @@ class User extends Authenticatable
         'email',
         'password',
         'type',
-        'image'
+        'image',
+        'gender',
+        'mobile_number',
+        'address',
+        'city_id',
+        'state_id',
+        'country_id',
     ];
 
     /**
@@ -46,5 +55,29 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+        /**
+     * Get the country that the user belongs to.
+     */
+    public function country()
+    {
+        return $this->hasOne(Country::class,'id','country_id');
+    }
+
+    /**
+     * Get the state that the user belongs to.
+     */
+    public function state()
+    {
+        return $this->hasOne(State::class,'id','state_id');
+    }
+
+    /**
+     * Get the city that the user belongs to.
+     */
+    public function city()
+    {
+        return $this->hasOne(City::class,'id','city_id');
     }
 }

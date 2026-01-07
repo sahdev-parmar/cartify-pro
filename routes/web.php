@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminauthController;
 use App\Livewire\Admin\Categories\CategoryIndex;
+use App\Livewire\Admin\Customers\CustomerIndex;
 use App\Livewire\Admin\Product\ProductAdd;
 use App\Livewire\Admin\Product\Productindex;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,7 @@ Route::prefix('admin')->middleware(['admin-login:dashboard'])->group(function ()
     Route::get('category',CategoryIndex::class)->name('admin.category.index');
     Route::get('product',Productindex::class)->name('admin.product.index');
     Route::get('product/add',ProductAdd::class)->name('admin.product.add');
+    Route::get('customers',CustomerIndex::class)->name('admin.customer.index');
 });
 
 Route::view('/test','test');

@@ -22,9 +22,12 @@ class Productindex extends Component
 
     public function render()
     {
-        $categories = Category::all();
+        $categories =  Category::where('status', 1)->get();
 
-        $products = Product::latest()->where('name', 'like', '%'.$this->search.'%');
+        $products = Product::latest()->where('name', 'like', '%'.$this->search.'%')
+            ->whereHas('category', function ($query) {
+            $query->where('status', 1); // Only products with active category
+        });
             if($this->stockFilter != 'all'){ 
                 $products->whereStock_status($this->stockFilter);
             }
