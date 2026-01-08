@@ -205,6 +205,7 @@
             @include('livewire.admin.product.product-view')
         @endif
 
+        {{-- EDIT PRODUCT MODAL --}}
         @if($showEditModal)
             <livewire:Admin.Product.ProductEdit>
         @endif

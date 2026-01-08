@@ -20,6 +20,10 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+
+    // type -> (superadmin,admin,user)
+    // gender -> (1)->female,(2)->male
+    // status -> (1)->active,(2)->blocked
     protected $fillable = [
         'name',
         'email',
@@ -32,6 +36,7 @@ class User extends Authenticatable
         'city_id',
         'state_id',
         'country_id',
+        'status'
     ];
 
     /**

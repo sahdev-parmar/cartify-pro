@@ -76,7 +76,7 @@
     <!-- User Profile -->
     <div class="p-4 border-t border-gray-200 dark:border-gray-700">
         <div class="flex items-center space-x-3 mb-3">
-        <img src="{{auth()->user()->image ??  'https://ui-avatars.com/api/?name=Admin+User&background=3b82f6&color=fff' }}" alt="Admin User" class="w-10 h-10 rounded-full">
+        <img src="{{auth()->user()->image ? asset('storage/uploads/user/' . auth()->user()->image) :  'https://ui-avatars.com/api/?name=Admin+User&background=3b82f6&color=fff' }}" alt="Admin User" class="w-10 h-10 rounded-full">
             <div class="flex-1 min-w-0">
                 <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{auth()->user()->name}}</p>
                 <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{auth()->user()->email}}</p>
