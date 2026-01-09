@@ -166,7 +166,6 @@
                                         </svg>
                                     </button>
                                     <button wire:click="deleteUser({{ $user->id }})"
-                                        wire:confirm="Are you sure you want to delete this user?"
                                         class="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
                                         title="Delete">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,3 +212,42 @@
 
     </div>
 </div>
+@script
+<script>
+    window.addEventListener('confirmMessage', event => { 
+        Swal.fire({
+        title: "Are you sure?",
+        text: event.detail.text,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+        if (result.isConfirmed) {
+            $wire.$call('Confirmdelete') // call function
+        }
+        });
+    });
+
+    window.addEventListener('doneMessage', event => {
+
+        const isDark = $('html').hasClass('dark');
+        Swal.fire({
+            title: event.detail.title,
+            text: event.detail.text,
+            icon: "success",
+            background: isDark ? '#0f172a' : '#ffffff',
+            color:       isDark ? '#22c55e' : '#0f172a',
+            iconColor:   isDark ? '#22c55e' : '#16a34a',
+            confirmButtonText: 'OK',
+            confirmButtonColor: isDark ? '#2563eb' : '#3b82f6',
+            customClass: {
+                popup: 'rounded-xl',
+                title: isDark ? 'text-green-400' : 'text-green-700',
+                confirmButton: 'text-white font-semibold'
+            }
+        });
+    }); 
+</script>
+@endscript

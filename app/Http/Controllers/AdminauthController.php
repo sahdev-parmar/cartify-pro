@@ -18,10 +18,7 @@ class AdminauthController extends Controller
             'password.required' => 'Enter Password',
         ]);
 
-        if (Auth::attempt(
-            ['email' => $request->email, 'password' => $request->password],
-            $request->boolean('remember')
-            )) 
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password],$request->boolean('remember'))) 
             {
 
                 $request->session()->regenerate();
@@ -33,10 +30,20 @@ class AdminauthController extends Controller
                     return back()->withErrors([
                         'invalid' => 'Email or password is incorrect',
                     ]);
-            }
+                }
 
-            return redirect()->route('admin.dashboard');
-        }
+                // type check status login
+                if (auth()->user()->status == 0 ) {
+                    Auth::logout();
+
+                    return back()->withErrors([
+                        'invalid' => 'Your Account is Block Please Contact our admins',
+                    ]);
+                }
+
+                return redirect()->route('admin.dashboard');
+
+            }
 
         return back()->withErrors([
             'invalid' => 'Email or password is incorrect',

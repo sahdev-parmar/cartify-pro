@@ -12,13 +12,33 @@ class CustomerIndex extends Component
 {
     public $showViewModal,$selectedUser;
     public $showEditModal,$editUserId;
+    public $search,$statusFilter = 'all';
+    public $deleteid;
 
     public function render()
     {   
-        $users = User::paginate(10);
+       $users = User::latest()->whereType('user')
+            ->where(function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%')
+                ->orWhere('email', 'like', '%' . $this->search . '%')
+                ->orWhere('mobile_number', 'like', '%' . $this->search . '%');
+        });
+
+        if($this->statusFilter != 'all')
+        {
+            $users->whereStatus($this->statusFilter);
+        }
+
+        $users = $users->paginate(10);
+
         return view('livewire.admin.customers.customer-index',[
             'users' => $users
         ]);
+    }
+
+    public function resetFilters()
+    {
+        $this->reset('statusFilter');    
     }
 
     public function toggleStatus($id)
@@ -50,5 +70,17 @@ class CustomerIndex extends Component
     public function closeModal()
     {
         $this->showEditModal = false; 
+    }
+
+    public function deleteUser($id)
+    {
+        $this->deleteid = $id;
+        $this->dispatch('confirmMessage',text: 'ou Want To Delete This Customers Account!');
+    }
+
+    public function Confirmdelete()
+    {
+        User::find($this->deleteid)->delete();
+        $this->dispatch('doneMessage',text: 'Succesfully Delete Customer Account!',title : 'Deleted!');
     }
 }

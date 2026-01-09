@@ -138,6 +138,7 @@
                                         class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 @error('edit_type') border-red-500 @enderror"
                                     >
                                         <option value="">Select Type</option>
+                                        <option value="superadmin">Super Admin</option>
                                         <option value="admin">Admin</option>
                                         <option value="user">User</option>
                                     </select>
