@@ -100,7 +100,7 @@
                                             <img 
                                                 src="{{ asset('storage/uploads/user/' . $admin->image) }}" 
                                                 alt="{{ $admin->name }}"
-                                                class="w-10 h-10 rounded-full object-cover border-2 border-gray-200 dark:border-gray-700"
+                                                class="w-12 h-12 rounded-full object-cover border-2 border-gray-200 dark:border-gray-700"
                                             >
                                         @else
                                             <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-sm">
