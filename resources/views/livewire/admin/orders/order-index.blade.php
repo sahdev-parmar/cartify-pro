@@ -5,14 +5,18 @@
     @section('page-title')
         <div>
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Orders Management</h2>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Track and manage customer orders</p>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage customer orders</p>
         </div>
     @endsection
         
-
+    <div class="flex items-center">
+        <button wire:click="resetFilters" class="flex items-center px-4 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg">
+            Reset Filters
+        </button>
+    </div>
     <!-- Filters Section -->
     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-        <div class="grid grid-cols-5 gap-4">
+        <div class="grid grid-cols-4 gap-4">
             <!-- Search -->
             <div class="col-span-2">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Search</label>
@@ -20,7 +24,7 @@
                     <input 
                         type="text"
                         wire:model.live.debounce.300ms="search"
-                        placeholder="Order number, customer, product..." 
+                        placeholder="customer name, email..." 
                         class="w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                     <svg class="absolute left-3 top-3 w-5 h-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -53,12 +57,6 @@
                 </select>
             </div>
         </div>
-
-        <div class="flex items-center justify-end mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-            <button wire:click="resetFilters" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-                Reset Filters
-            </button>
-        </div>
     </div>
 
     <!-- Orders Table -->
@@ -82,7 +80,7 @@
                             <!-- Order Info -->
                             <td class="px-6 py-4">
                                 <div>
-                                    <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $order->formatted_order_number }}</p>
+                                    <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $order->order_number }}</p>
                                     <p class="text-xs text-gray-500 dark:text-gray-400">{{ $order->created_at->format('M d, Y') }}</p>
                                     <p class="text-xs text-gray-400 dark:text-gray-500">{{ $order->created_at->format('h:i A') }}</p>
                                 </div>
@@ -236,14 +234,14 @@
                             <td class="px-6 py-4 whitespace-nowrap text-right">
                                 <div class="flex items-center justify-end space-x-2">
                                     <!-- View -->
-                                    <button wire:click="viewOrder({{ $order->id }})" 
-                                       class="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors" 
-                                       title="View Details">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                        </svg>
-                                    </button>
+                                        <button wire:click="viewShowOrder({{ $order->id }})" 
+                                        class="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors" 
+                                        title="View Details">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                            </svg>
+                                        </button>
 
                                     <!-- Edit -->
                                         <button wire:click="editOrder({{ $order->id }})"
@@ -291,4 +289,8 @@
             {{ $orders->links() }}
         </div>
     </div>
+
+    @if($showViewModal)
+        @include('livewire.admin.orders.orderView')
+    @endif
 </div>

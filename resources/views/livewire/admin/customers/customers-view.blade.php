@@ -34,7 +34,7 @@
                             <div class="flex-shrink-0">
                                 @if($selectedUser->image)
                                     <img 
-                                        src="{{ asset('storage/' . $selectedUser->image) }}" 
+                                        src="{{ asset('storage/uploads/user/' . $selectedUser->image) }}" 
                                         alt="{{ $selectedUser->name }}"
                                         class="w-32 h-32 rounded-2xl object-cover border-4 border-blue-500 shadow-lg"
                                     >
