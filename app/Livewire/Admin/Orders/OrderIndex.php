@@ -13,6 +13,7 @@ class OrderIndex extends Component
     public $openDropdown;
     public $search,$statusFilter = 'all',$dateFilter = 'all';
     public $viewOrder = [],$showViewModal;
+    public $delteid;
     
     public function render()
     {
@@ -55,6 +56,10 @@ class OrderIndex extends Component
         ]);
     }
 
+    public function resetFilters()
+    {
+        $this->reset('statusFilter','dateFilter');    
+    }
     public function toggleDropdown($id)
     {
         $this->openDropdown = ($this->openDropdown === $id) ? null : $id; //second time click  so hide
@@ -70,5 +75,23 @@ class OrderIndex extends Component
     {
         $this->reset('viewOrder');
         $this->showViewModal = false;
+    }
+
+    public function updateStatus($id,$value)
+    {
+        Order::find($id)->update(['status' => $value]);
+        $this->reset('openDropdown');
+    }
+
+    public function deleteOrder($id)
+    {
+        $this->delteid = $id;
+        $this->dispatch('confirmMessage',text: 'You Want To Delete This Order!');
+    }
+
+    public function Confirmdelete()
+    {
+        Order::find($this->delteid)->delete();
+        $this->dispatch('doneMessage',text: 'Succesfully Delete Order !',title : 'Deleted!');
     }
 }

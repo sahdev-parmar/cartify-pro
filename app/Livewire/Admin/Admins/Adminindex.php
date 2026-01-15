@@ -131,7 +131,7 @@ class Adminindex extends Component
    public function deleteUser($id)
     {
         $this->deleteid = $id;
-        $this->dispatch('confirmMessage',text: 'ou Want To Delete This User Account!');
+        $this->dispatch('confirmMessage',text: 'you Want To Delete This User Account!');
     }
 
     public function Confirmdelete()
