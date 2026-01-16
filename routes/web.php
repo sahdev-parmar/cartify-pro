@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminauthController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Livewire\Admin\Admins\Adminindex;
 use App\Livewire\Admin\Categories\CategoryIndex;
 use App\Livewire\Admin\Customers\CustomerIndex;
@@ -35,4 +36,10 @@ Route::prefix('admin')->middleware(['admin-login:dashboard'])->group(function ()
     Route::get('orders',OrderIndex::class)->name('admin.orders.index');
 });
 
-Route::view('/test','test');
+Route::get('register',[RegisterController::class,'index'])->name('register');
+Route::get('register',[RegisterController::class,'index'])->name('login');
+Route::post('login',[RegisterController::class,'store'])->name('post-register');
+
+Route::middleware(['auth'])->group(function (){
+    Route::view('/test','test')->name('home');
+});
