@@ -59,7 +59,7 @@
         <div class="my-4 border-t border-gray-200 dark:border-gray-700"></div>
 
         <!-- Admins (Super Admin Only) -->
-        @if(Auth::user()->type === 'superadmin')
+        @if(Auth::guard('admin')->user()->type === 'superadmin')
             <a 
                 href="{{ route('admin.admins.index') }}" 
                 class="flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors {{ request()->routeIs('admin.admins.*') ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : '' }}"
@@ -87,10 +87,10 @@
     <!-- User Profile -->
     <div class="p-4 border-t border-gray-200 dark:border-gray-700">
         <div class="flex items-center space-x-3 mb-3">
-        <img src="{{auth()->user()->image ? asset('storage/uploads/user/' . auth()->user()->image) :  'https://ui-avatars.com/api/?name=Admin+User&background=3b82f6&color=fff' }}" alt="Admin User" class="w-10 h-10 rounded-full">
+        <img src="{{Auth::guard('admin')->user()->image ? asset('storage/uploads/user/' . Auth::guard('admin')->user()->image) :  'https://ui-avatars.com/api/?name=Admin+User&background=3b82f6&color=fff' }}" alt="Admin User" class="w-10 h-10 rounded-full">
             <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{auth()->user()->name}}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{auth()->user()->email}}</p>
+                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{Auth::guard('admin')->user()->name}}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{Auth::guard('admin')->user()->email}}</p>
             </div>
         </div>
         <form method="POST" action="{{route('admin.logout')}}">

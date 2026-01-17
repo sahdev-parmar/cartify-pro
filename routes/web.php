@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminauthController;
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Livewire\Admin\Admins\Adminindex;
 use App\Livewire\Admin\Categories\CategoryIndex;
 use App\Livewire\Admin\Customers\CustomerIndex;
@@ -19,7 +19,7 @@ Route::get('/admin', function () {
     return redirect()->route('admin.login');
 });
 
-Route::prefix('admin')->middleware(['admin-login:login'])->group(function (){
+Route::prefix('admin')->middleware(['admin-login:login'])->group(function (){   
     Route::view('login','adminV1.auth.login')->name("admin.login");
     Route::post('login-post',[AdminauthController::class,'auth'])->name("admin.login-post");
     Route::post('logout',[AdminauthController::class,'logout'])->name("admin.logout");
@@ -36,10 +36,18 @@ Route::prefix('admin')->middleware(['admin-login:dashboard'])->group(function ()
     Route::get('orders',OrderIndex::class)->name('admin.orders.index');
 });
 
-Route::get('register',[RegisterController::class,'index'])->name('register');
-Route::get('register',[RegisterController::class,'index'])->name('login');
-Route::post('login',[RegisterController::class,'store'])->name('post-register');
+Route::middleware('guest')->group(function (){
+    Route::get('register',[AuthController::class,'index'])->name('register');
+    Route::post('regoster',[AuthController::class,'store'])->name('post-register');
+    Route::view('login','Auth.login')->name('login');
+    Route::post('login',[AuthController::class,'login'])->name('post-login');
+});
+
 
 Route::middleware(['auth'])->group(function (){
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    
     Route::view('/test','test')->name('home');
+
 });

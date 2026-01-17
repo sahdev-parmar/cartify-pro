@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminLoginRedirect
@@ -16,13 +17,13 @@ class AdminLoginRedirect
     public function handle(Request $request, Closure $next,$type): Response
     {
         if($type == 'login'){
-            if($request->is('admin/login') && auth()->check() && auth()->user()->type != 'user' ){
+            if($request->is('admin/login') && Auth::guard('admin')->check() && Auth::guard('admin')->user()->type != 'user' ){
                 return redirect()->route('admin.dashboard');
             }
         }
         if($type == 'dashboard'){
 
-            if (!auth()->check() || auth()->user()->type == 'user') {
+            if (!Auth::guard('admin')->check() || Auth::guard('admin')->user()->type == 'user') {
                 return redirect()->route('admin.login');
             }
         }

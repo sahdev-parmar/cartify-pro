@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Nnjeim\World\Models\Country;
 
-class RegisterController extends Controller
+class AuthController extends Controller
 {
     public function index()
     {
@@ -75,5 +75,52 @@ class RegisterController extends Controller
         Auth::login($user,$request->remember_me);
         return redirect()->route('home');
         
+    }
+
+    public function login(Request $request)
+    {
+         // Validate input
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ],[
+            'email.required' => 'Email address is required.',
+            'password.required' => 'password is required.'
+        ]);
+
+        // Attempt to login
+        $credentials = $request->only('email', 'password');
+        $remember = $request->has('remember');
+
+        if (Auth::attempt($credentials, $remember)) {
+            $request->session()->regenerate();
+
+            // Check user type and redirect accordingly
+            $user = Auth::user();
+
+            // Check if user is blocked
+            if ($user->status == 0) {
+                Auth::logout();
+                return back()->with('error', 'Your account has been blocked. Please contact support.');
+            }
+
+            return redirect()->intended(route('home'));
+                
+        }
+
+        // Login failed
+        return back()
+            ->withInput($request->only('email'))
+            ->with('error', 'Invalid email or password. Please try again.');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
     }
 }
