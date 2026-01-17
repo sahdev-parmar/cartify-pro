@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminauthController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\TestController;
 use App\Livewire\Admin\Admins\Adminindex;
 use App\Livewire\Admin\Categories\CategoryIndex;
 use App\Livewire\Admin\Customers\CustomerIndex;
@@ -44,10 +45,11 @@ Route::middleware('guest')->group(function (){
 });
 
 
+Route::get('/test',[TestController::class,'show'])->name('home');
 Route::middleware(['auth'])->group(function (){
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     
-    Route::view('/test','test')->name('home');
+   
 
 });
