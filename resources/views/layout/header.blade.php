@@ -1,25 +1,5 @@
  <!-- Header -->
 <header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
-    <!-- Top Bar -->
-    <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2">
-        <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between text-sm">
-                <div class="flex items-center space-x-4">
-                    <a href="tel:+1234567890" class="hover:text-gray-200 flex items-center">
-                        <i class="fas fa-phone-alt mr-2"></i>
-                        999999999
-                    </a>
-                    <a href="mailto:info@cartifypro.com" class="hover:text-gray-200 flex items-center">
-                        <i class="fas fa-envelope mr-2"></i>
-                        info@cartifypro.com
-                    </a>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <span>Free shipping on orders over ₹5000!</span>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Main Header -->
     <div class="border-b border-gray-200 dark:border-gray-700">
@@ -125,26 +105,33 @@
     </div>
 
     <!-- Navigation Menu -->
-    <nav class="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+    <nav class="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 ">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between">
                 <ul class="flex items-center space-x-1">
                     <li>
-                        <a href="{{ route('home') }}" class="px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-gray-800 transition-colors flex items-center font-medium">
+                        <a href="{{ route('home') }}" class="px-4 py-3 transition-colors flex items-center font-medium
+                        {{ request()->routeIs('home')
+                        ? ' dark:bg-gray-800 text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-800'
+                        : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-gray-800' }}">
+
                             <i class="fas fa-home mr-2"></i>
                             Home
                         </a>
                     </li>
                     <li class="relative dropdown">
-                        <button class="px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-gray-800 transition-colors flex items-center font-medium">
+                        <button class="px-4 py-3 transition-colors flex items-center font-medium
+                        {{ request()->routeIs('category.*')
+                        ? ' dark:bg-gray-800 text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-800'
+                        : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-gray-800' }}">
                             <i class="fas fa-th-large mr-2"></i>
                             Categories
                             <i class="fas fa-chevron-down ml-2 text-xs"></i>
                         </button>
                         <!-- Categories Dropdown -->
-                        <div class="dropdown-menu absolute left-0 mt-0 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700">
-                            @foreach($categories ?? [] as $category)
-                                <a href="" class="flex items-center justify-between px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <div class="dropdown-menu absolute left-0 mt-0 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 " style="z-index: 1000;">
+                            @foreach($menucategories ?? [] as $category)
+                                <a href="{{ route('category.show',$category->slug)}}" class="flex items-center justify-between px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <span>{{ $category->name }}</span>
                                     <i class="fas fa-chevron-right text-xs"></i>
                                 </a>
@@ -152,13 +139,19 @@
                         </div>
                     </li>
                     <li>
-                        <a href="" class="px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-gray-800 transition-colors flex items-center font-medium">
+                        <a href="" class="px-4 py-3  transition-colors flex items-center font-medium
+                        {{ request()->routeIs('product.*')
+                        ? ' dark:bg-gray-800 text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-800'
+                        : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-gray-800' }}">
                             <i class="fas fa-box-open mr-2"></i>
                             Products
                         </a>
                     </li>
                     <li>
-                        <a href="" class="px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-gray-800 transition-colors flex items-center font-medium">
+                        <a href="" class="px-4 py-3 transition-colors flex items-center font-medium
+                        {{ request()->routeIs('contact-us')
+                        ? ' dark:bg-gray-800 text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-800'
+                        : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-gray-800' }}">
                             <i class="fas fa-envelope mr-2"></i>
                             Contact Us
                         </a>

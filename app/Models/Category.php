@@ -16,4 +16,8 @@ class Category extends Model
         "description"
     ];
 
+    public function products_count()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

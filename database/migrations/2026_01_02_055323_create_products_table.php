@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
-            $table->tinyInteger('stock_status')->default(1)->comment("(1)->In_stock(2)->out_of_stock");
+            $table->tinyInteger('stock_status')->default(1)->comment("(1)->In_stock(0)->out_of_stock");
             $table->integer('category_id')->nullable();
             $table->text('images')->nullable();
             $table->integer('sales_count')->default(0);
