@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminauthController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\TestController;
 use App\Livewire\Admin\Admins\Adminindex;
 use App\Livewire\Admin\Categories\CategoryIndex;
@@ -50,6 +51,8 @@ Route::middleware('guest')->group(function (){
 Route::get('/home',[HomeController::class,'show'])->name('home');
 Route::get('/category/filter', [CategoryController::class, 'filterCategory'])->name('category.filter');
 Route::get('/category/{slug}', [CategoryController::class, 'showCategory'])->name('category.show');
+Route::get('/product/{slug}', [ProductDetailController::class, 'show'])->name('product.show');
+Route::get('/cart/add')->name('cart.add');
 
 
 Route::middleware(['auth'])->group(function (){

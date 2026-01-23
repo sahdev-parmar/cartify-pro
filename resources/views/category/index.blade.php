@@ -152,133 +152,14 @@
 
         <!-- Products Grid -->
         <div class="flex-1">
-            
             <!-- Loading Spinner -->
             <div id="loadingSpinner" class="hidden text-center py-20">
                 <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400"></div>
                 <p class="mt-4 text-gray-600 dark:text-gray-400">Loading products...</p>
             </div>
-
-            <!-- Products Container -->
-            <div id="productsContainer">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                @forelse($products as $product)
-                    <div class="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 group">
-                        <!-- Product Image -->
-                        <div class="relative overflow-hidden aspect-square">
-                            <a href="">
-                                @if($product->images)
-                                    <img src="{{ asset('storage/uploads/product/' .  product_images($product->images)[0]) }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                                @else
-                                    <div class="w-full h-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
-                                        <i class="fas fa-box text-white text-6xl"></i>
-                                    </div>
-                                @endif
-                            </a>
-                            <!-- Quick Actions -->
-                            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                                <div class="flex space-x-2">
-                                    <a href="" class="w-10 h-10 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product Info -->
-                        <div class="p-4">
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ $product->category->name ?? 'Uncategorized' }}</p>
-                            <a href="">
-                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2 truncate hover:text-blue-600 dark:hover:text-blue-400">{{ $product->name }}</h3>
-                            </a>
-                            
-                            <!-- Price -->
-                            <div class="flex items-center justify-between mb-3">
-                                <div>
-                                    <p class="text-lg font-bold text-blue-600 dark:text-blue-400">₹{{ number_format($product->price, 2) }}</p>
-                                </div>
-                                @if($product->stock_status)
-                                    <span class="text-xs text-green-600 dark:text-green-400 font-semibold">In Stock</span>
-                                @else
-                                    <span class="text-xs text-red-600 dark:text-red-400 font-semibold">Out of Stock</span>
-                                @endif
-                            </div>
-
-                            <!-- Add to Cart Button -->
-                            @if($product->stock_status)
-                                <div class="flex gap-6">
-                                    <button 
-                                        onclick="addToCart({{ $product->id }})"
-                                        class="w-full py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors font-semibold text-sm"
-                                    >
-                                        <i class="fas fa-shopping-cart mr-2"></i>
-                                        Add to Cart
-                                    </button>
-                                    <button class="w-full py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-colors font-semibold text-sm">
-                                        <i class="fas fa-bolt mr-2"></i>
-                                        Buy Now
-                                    </button>
-                                </div> 
-                              
-                            @else
-                                <button 
-                                    class="w-full py-2 bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded-lg cursor-not-allowed font-semibold text-sm"
-                                    disabled
-                                >
-                                    Out of Stock
-                                </button>
-                            @endif
-                        </div>
-                    </div>
-                @empty
-                    <div class="col-span-full text-center py-12">
-                        <i class="fas fa-search text-6xl text-gray-300 dark:text-gray-600 mb-4"></i>
-                        <p class="text-gray-500 dark:text-gray-400 text-lg font-semibold mb-2">No products found</p>
-                        <p class="text-gray-400 dark:text-gray-500 text-sm">Try adjusting your filters or search terms</p>
-                    </div>
-                @endforelse
-            </div>
-                <!-- Pagination -->
-                @if($products->hasPages())
-                    <div class="mt-8 flex justify-center">
-                        <nav class="flex items-center space-x-2">
-                            {{-- Previous Page Link --}}
-                            @if ($products->onFirstPage())
-                                <span class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 rounded-lg cursor-not-allowed">
-                                    <i class="fas fa-chevron-left"></i>
-                                </span>
-                            @else
-                                <a href="{{ $products->previousPageUrl() }}" class="pagination px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-blue-600 hover:text-white transition-colors border border-gray-300 dark:border-gray-600">
-                                    <i class="fas fa-chevron-left"></i>
-                                </a>
-                            @endif
-
-                            {{-- Pagination Elements --}}
-                            @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
-                                @if ($page == $products->currentPage())
-                                    <span class="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold">
-                                        {{ $page }}
-                                    </span>
-                                @else
-                                    <a href="{{ $url }}" class="pagination px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-blue-600 hover:text-white transition-colors border border-gray-300 dark:border-gray-600">
-                                        {{ $page }}
-                                    </a>
-                                @endif
-                            @endforeach
-
-                            {{-- Next Page Link --}}
-                            @if ($products->hasMorePages())
-                                <a href="{{ $products->nextPageUrl() }}" class="pagination px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-blue-600 hover:text-white transition-colors border border-gray-300 dark:border-gray-600">
-                                    <i class="fas fa-chevron-right"></i>
-                                </a>
-                            @else
-                                <span class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 rounded-lg cursor-not-allowed">
-                                    <i class="fas fa-chevron-right"></i>
-                                </span>
-                            @endif
-                        </nav>
-                    </div>
-                @endif
+                <div id="productsContainer">
+                        @include('category.product-grid', ['products' => $products])
+                </div>
         </div>
     </div>
 </div>
@@ -348,16 +229,12 @@ $(document).ready(function() {
             },
             success: function(response) {
                 $('#productsContainer').html(response.html);
-                $('#productCount').text(response.total);
                 
                 // Hide loading
                 $('#loadingSpinner').addClass('hidden');
                 $('#productsContainer').removeClass('opacity-50');
 
-                // Scroll to top of products
-                $('html, body').animate({
-                    scrollTop: $('#productsContainer').offset().top - 100
-                }, 300);
+                
             },
             error: function(xhr) {
                 console.error('Error filtering products:', xhr);
@@ -371,9 +248,9 @@ $(document).ready(function() {
     window.resetFilters = function() {
         $('#searchInput').val('');
         $('#minPrice').val(0);
-        $('#maxPrice').val(1000);
+        $('#maxPrice').val(1000000);
         $('#minPriceValue').text(0);
-        $('#maxPriceValue').text(1000);
+        $('#maxPriceValue').text(1000000);
         $('#inStock').prop('checked', false);
         $('#sortBy').val('latest');
         filterProducts();
@@ -389,34 +266,3 @@ $(document).ready(function() {
 });
 </script>
 @endpush
-{{-- <script>
-// Add to Cart Function
-function addToCart(productId) {
-    $.ajax({
-        url: '{{ route("cart.add") }}',
-        type: 'POST',
-        data: {
-            _token: '{{ csrf_token() }}',
-            product_id: productId,
-            quantity: 1
-        },
-        success: function(response) {
-            // Update cart count if exists
-            if (response.cart_count) {
-                $('.cart-count').text(response.cart_count);
-            }
-            
-            // Show success message
-            alert('Product added to cart successfully!');
-        },
-        error: function(xhr) {
-            if (xhr.status === 401) {
-                // Redirect to login
-                window.location.href = '{{ route("login") }}';
-            } else {
-                alert('Error adding product to cart. Please try again.');
-            }
-        }
-    });
-}
-</script> --}}
