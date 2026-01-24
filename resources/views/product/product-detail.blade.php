@@ -4,8 +4,17 @@
 
 @section('content')
 
+  <div id="message-box" class="bg-green-100  border-green-400 hidden  fixed right-[10px] top-[10px] w-100 dark:bg-green-900 border border-green-200 dark:border-green-800 rounded-xl p-4" style="z-index: 999">
+        <div class="flex items-center">
+            <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <p class="text-sm text-green-800 dark:text-green-300" id="message"></p>
+        </div>
+    </div>
 <!-- Breadcrumb -->
 <div class="bg-gray-100 dark:bg-gray-800 py-4">
+
     <div class="container mx-auto px-4">
         <nav class="flex items-center space-x-2 text-sm">
             <a href="{{ route('home') }}" class="text-blue-600 dark:text-blue-400 hover:underline">Home</a>
@@ -30,7 +39,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 border border-gray-200 dark:border-gray-700 mb-4">
                 <div class="aspect-square overflow-hidden rounded-lg" id="mainImageContainer">
                     @if($product->images)
-                        <img src="{{ asset('storage/uploads/product/' . product_images($product->images)[0]) }}" alt="{{ $product->name }}" id="mainImage" class="w-full h-full object-cover">
+                        <img src="{{ asset('storage/uploads/product/' . product_images($product->images)[0]) }}" alt="{{ $product->name }}" id="mainImage" class="w-full h-full ">
                     @else
                         <div class="w-full h-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
                             <i class="fas fa-box text-white text-9xl"></i>
@@ -320,11 +329,7 @@ function addToCart() {
             quantity: quantity
         },
         success: function(response) {
-            // Update cart count in header
-            if (response.cart_count) {
-                $('.cart-count').text(response.cart_count);
-            }
-            
+          
             // Show success state
             button.innerHTML = '<i class="fas fa-check mr-2"></i>Added to Cart!';
             button.classList.remove('from-blue-600', 'to-purple-600');
@@ -366,7 +371,14 @@ function buyNow() {
 // Show notification
 function showNotification(message, type) {
     // You can use a toast library or create a custom notification
-    alert(message);
+    $('#message').empty();
+    $('#message-box').fadeIn();
+    $('#message').text(message);
+
+    setTimeout(function(){
+        $('#message-box').fadeOut();
+    },2000)
+    
 }
 </script>
 @endpush

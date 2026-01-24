@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminauthController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductDetailController;
@@ -52,11 +53,11 @@ Route::get('/home',[HomeController::class,'show'])->name('home');
 Route::get('/category/filter', [CategoryController::class, 'filterCategory'])->name('category.filter');
 Route::get('/category/{slug}', [CategoryController::class, 'showCategory'])->name('category.show');
 Route::get('/product/{slug}', [ProductDetailController::class, 'show'])->name('product.show');
-Route::get('/cart/add')->name('cart.add');
 
 
 Route::middleware(['auth'])->group(function (){
 
+    Route::post('/cart/add',[CartController::class,'add'])->name('cart.add');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 });
