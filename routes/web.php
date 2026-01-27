@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminauthController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\TestController;
@@ -53,11 +54,20 @@ Route::get('/home',[HomeController::class,'show'])->name('home');
 Route::get('/category/filter', [CategoryController::class, 'filterCategory'])->name('category.filter');
 Route::get('/category/{slug}', [CategoryController::class, 'showCategory'])->name('category.show');
 Route::get('/product/{slug}', [ProductDetailController::class, 'show'])->name('product.show');
+Route::get('/products', [ProductDetailController::class, 'index'])->name('products.index');
+
 
 
 Route::middleware(['auth'])->group(function (){
 
     Route::post('/cart/add',[CartController::class,'add'])->name('cart.add');
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+    
+    Route::get('/cart/count', [CartController::class, 'getCount'])->name('cart.count');
+    Route::get('/cart/items', [CartController::class, 'getItems'])->name('cart.items');
+    Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+    Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 });

@@ -83,8 +83,7 @@
             const menu = document.getElementById('mobileMenu');
             menu.classList.toggle('hidden');
         }
-    </script>
-    
+    </script> 
     @stack('scripts')
 </body>
 </html>

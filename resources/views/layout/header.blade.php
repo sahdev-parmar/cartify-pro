@@ -44,13 +44,7 @@
                     </button>
 
                     <!-- Cart -->
-                    <a href="" class="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                        <i class="fas fa-shopping-cart text-gray-600 dark:text-gray-300 text-xl"></i>
-                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                            {{ auth()->check() ? auth()->user()->cart()->count() : 0 }}
-                        </span>
-                    </a>
-
+                    @include('cart.cart-slide')
                     @guest
                         <!-- Login Button -->
                         <a href="{{ route('login') }}" class="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors font-semibold">
