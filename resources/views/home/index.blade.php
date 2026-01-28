@@ -7,8 +7,8 @@
     <!-- Hero Section -->
     <section class="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800 py-20">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div class="text-white">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+                <div class="text-white md:col-span-2">
                     <h1 class="text-5xl font-bold mb-6">Welcome to Cartify Pro</h1>
                     <p class="text-xl mb-8 text-gray-100">Discover amazing products at unbeatable prices. Shop now and enjoy free shipping on orders over $50!</p>
                     <div class="flex space-x-4">
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="hidden md:block">
-                    <img src="{{ asset('shopping.png') }}" alt="Shopping" class="w-full h-80 ">
+                    <img src="{{ asset('shopping.png') }}" alt="Shopping" class="w-80 h-80 ">
                 </div>
             </div>
         </div>
@@ -90,7 +90,7 @@
                             <!-- Quick Actions -->
                             <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
                                 <div class="flex space-x-2">
-                                    <a href="" class="w-10 h-10 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors">
+                                    <a href="{{route('product.show',$product->slug)}}" class="w-10 h-10 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                 </div>
@@ -115,16 +115,17 @@
                             </div>
 
                             <!-- Add to Cart or buy Button -->
-                            <div class="flex gap-6">
-                                <button class="w-full py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors font-semibold text-sm">
-                                    <i class="fas fa-shopping-cart mr-2"></i>
-                                    Add to Cart
-                                </button>
-                                <button class="w-full py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-colors font-semibold text-sm">
-                                    <i class="fas fa-bolt mr-2"></i>
-                                    Buy Now
-                                </button>
-                             </div> 
+                            <div class="flex gap-4">
+                                <a href="{{ route('product.show', $product->slug) }}"
+                                class="w-full inline-flex items-center justify-center py-2.5 
+                                        bg-gradient-to-r from-blue-600 to-purple-600 text-white 
+                                        rounded-xl font-semibold text-sm
+                                        hover:from-blue-700 hover:to-purple-700 
+                                        transition-all duration-300 hover:scale-[1.02] shadow-md">
+                                    <i class="fas fa-eye mr-2"></i>
+                                    View Product
+                                </a>
+                            </div>
                         </div>
                     </div>
                 @empty

@@ -143,6 +143,7 @@
                             value="1" 
                             min="1" 
                             max="100" 
+                            disabled
                             class="w-24 text-center text-xl font-bold py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                         >
                         <button onclick="increaseQty()" class="w-12 h-12 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors flex items-center justify-center font-bold text-xl">
@@ -164,13 +165,18 @@
                     </button>
 
                     <!-- Buy Now Button -->
-                    <button 
-                        onclick="buyNow()" 
-                        class="py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105"
-                    >
-                        <i class="fas fa-bolt mr-2"></i>
-                        Buy Now
-                    </button>
+                    <form action="{{ route('checkout.buynow') }}" method="POST" >
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="hidden" name="quantity" value="1" id="qtyHidden"> {{-- hidden so not take quantity so chnage id  --}}
+                        <button type="submit" class="w-full py-4 bg-gradient-to-r from-green-600 to-emerald-600 
+                            text-white rounded-lg hover:from-green-700 hover:to-emerald-700 
+                            transition-all duration-300 font-bold text-lg shadow-lg 
+                            hover:shadow-xl transform hover:scale-105 flex items-center 
+                            justify-center">
+                            <i class="fas fa-bolt mr-2"></i>Buy Now
+                        </button>
+                    </form>
                 </div>
             @else
                 <!-- Out of Stock Notice -->
@@ -294,18 +300,22 @@ function changeImage(imageSrc, element) {
 // Quantity controls
 function increaseQty() {
     const input = document.getElementById('quantity');
+    const hidden = document.getElementById('qtyHidden'); //change also hidden buy now quantity
     const current = parseInt(input.value);
     const max = parseInt(input.max);
     if (current < max) {
         input.value = current + 1;
+        hidden.value = input.value;
     }
 }
 
 function decreaseQty() {
     const input = document.getElementById('quantity');
+    const hidden = document.getElementById('qtyHidden'); //change also hidden buy now quantity
     const current = parseInt(input.value);
     if (current > 1) {
         input.value = current - 1;
+        hidden.value = input.value;
     }
 }
 
@@ -359,13 +369,6 @@ function addToCart() {
             }
         }
     });
-}
-
-// Buy Now (Add to cart and redirect to checkout)
-function buyNow() {
-    const quantity = document.getElementById('quantity').value;
-    const productId = {{ $product->id }};
-
 }
 
 // Show notification

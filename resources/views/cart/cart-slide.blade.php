@@ -43,7 +43,7 @@
 
             <!-- Action Buttons -->
             <div class="space-y-2">
-                <a href="{{ route('checkout') }}" class="block w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-center rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors font-bold">
+                <a href="{{ route('checkout.index') }}" class="block w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-center rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors font-bold">
                     <i class="fas fa-credit-card mr-2"></i>Proceed to Checkout
                 </a>
             </div>

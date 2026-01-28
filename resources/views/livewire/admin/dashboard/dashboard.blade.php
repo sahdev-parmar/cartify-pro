@@ -9,7 +9,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Revenue</p>
-                    <p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">${{ number_format($totalRevenue, 2) }}</p>
+                    <p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">₹{{ number_format($totalRevenue, 2) }}</p>
                     <div class="mt-2 flex items-center text-sm">
                         @if($revenueGrowth >= 0)
                             <span class="flex items-center text-green-600 dark:text-green-400 font-medium">

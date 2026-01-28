@@ -60,13 +60,24 @@ Route::get('/products', [ProductDetailController::class, 'index'])->name('produc
 
 Route::middleware(['auth'])->group(function (){
 
-    Route::post('/cart/add',[CartController::class,'add'])->name('cart.add');
-    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::prefix('checkout')->group(function(){
+        Route::get('/', [CheckoutController::class, 'index'])->name('checkout.index');
+        Route::post('/buy', [CheckoutController::class, 'buynow'])->name('checkout.buynow');
+        Route::post('/process', [CheckoutController::class, 'process'])->name('checkout.process');
+    });
     
-    Route::get('/cart/count', [CartController::class, 'getCount'])->name('cart.count');
-    Route::get('/cart/items', [CartController::class, 'getItems'])->name('cart.items');
-    Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
-    Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+    Route::prefix('order')->group(function(){
+        Route::get('/', [CheckoutController::class, 'success'])->name('orders.index');
+        Route::get('/success/{orderId}', [CheckoutController::class, 'success'])->name('order.success');
+    });
+    
+    Route::prefix('cart')->group(function(){
+        Route::post('/add',[CartController::class,'add'])->name('cart.add');
+        Route::get('/count', [CartController::class, 'getCount'])->name('cart.count');
+        Route::get('/items', [CartController::class, 'getItems'])->name('cart.items');
+        Route::post('/update', [CartController::class, 'update'])->name('cart.update');
+        Route::post('/remove', [CartController::class, 'remove'])->name('cart.remove');
+    });
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 

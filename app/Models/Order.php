@@ -17,6 +17,7 @@ class Order extends Model
         'total',
         'city_id',
         'state_id',
+        'address',
         'country_id',
     ];
 
