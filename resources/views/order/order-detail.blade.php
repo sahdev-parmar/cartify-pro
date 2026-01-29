@@ -192,7 +192,7 @@
                     <!-- Need Help -->
                     <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                         <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Need help with your order?</p>
-                        <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-semibold">
+                        <a href="{{route('contact-us')}}" class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-semibold">
                             <i class="fas fa-headset mr-1"></i>Contact Support
                         </a>
                     </div>

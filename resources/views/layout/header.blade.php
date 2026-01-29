@@ -142,7 +142,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="" class="px-4 py-3 transition-colors flex items-center font-medium
+                        <a href="{{route('contact-us')}}" class="px-4 py-3 transition-colors flex items-center font-medium
                         {{ request()->routeIs('contact-us')
                         ? ' dark:bg-gray-800 text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-800'
                         : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-gray-800' }}">

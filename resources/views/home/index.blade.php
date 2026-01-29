@@ -5,23 +5,27 @@
 @section('content')
 
     <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800 py-20">
+    <section class="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800 py-20 ">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
-                <div class="text-white md:col-span-2">
+                <div class="text-white md:col-span-2  transition-all duration-700 ease-out
+               opacity-0 scale-75
+               popup-text  ">
                     <h1 class="text-5xl font-bold mb-6">Welcome to Cartify Pro</h1>
                     <p class="text-xl mb-8 text-gray-100">Discover amazing products at unbeatable prices. Shop now and enjoy free shipping on orders over $50!</p>
                     <div class="flex space-x-4">
                         <a href="" class="px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
                             View Products
                         </a>
-                        <a href="" class="px-8 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+                        <a href="{{route('contact-us')}}" class="px-8 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
                             Contact Us
                         </a>
                     </div>
                 </div>
                 <div class="hidden md:block">
-                    <img src="{{ asset('shopping.png') }}" alt="Shopping" class="w-80 h-80 ">
+                    <img src="{{ asset('shopping.png') }}" alt="Shopping"  class="w-80 h-80  transition-all duration-700 ease-out
+               opacity-0 scale-75 translate-y-6
+               popup-image">
                 </div>
             </div>
         </div>
@@ -37,7 +41,8 @@
 
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                 @forelse($categories as $category)
-                    <a href="{{ route('category.show',$category->slug)}}" class="group">
+                    <a href="{{ route('category.show',$category->slug)}}" class="group animate-card transition-all duration-700 ease-out
+                        opacity-0 translate-y-8">
                         <div class="bg-white dark:bg-gray-800 rounded-xl p-6 text-center hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500">
                             @if($category->image)
                                 <img src="{{ asset('storage/uploads/category/' . $category->image) }}" alt="{{ $category->name }}" class="w-20 h-20 mx-auto mb-4 rounded-lg object-cover">
@@ -174,3 +179,52 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.animate-card');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.remove('opacity-0', 'translate-y-8');
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                }, index * 120); // stagger animation
+
+                observer.unobserve(entry.target); // run once
+            }
+        });
+    }, {
+        threshold: 0.2 // trigger when 20% visible
+    });
+
+    cards.forEach(card => observer.observe(card));
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const img = document.querySelector('.popup-text');
+    if (img) {
+        setTimeout(() => {
+            img.classList.remove('opacity-0', 'scale-75');
+            img.classList.add('opacity-100', 'scale-100');
+        }, 200);
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const img = document.querySelector('.popup-image');
+    if (img) {
+        setTimeout(() => {
+            img.classList.remove('opacity-0', 'scale-75');
+            img.classList.remove('translate-y-6', 'translate-y-0');
+            img.classList.add('translate-y-6', 'translate-y-0');
+            img.classList.add('opacity-100', 'scale-100');
+        }, 200);
+    }
+});
+</script>
+
+    
+@endpush

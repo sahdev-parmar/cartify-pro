@@ -25,7 +25,7 @@
                 <ul class="space-y-2 text-sm">
                     <li><a href="{{ route('home') }}" class="hover:text-white">Home</a></li>
                     <li><a href="" class="hover:text-white">Products</a></li>
-                    <li><a href="" class="hover:text-white">Contact Us</a></li>
+                    <li><a href="{{route('contact-us')}}" class="hover:text-white">Contact Us</a></li>
                 </ul>
             </div>
 
@@ -35,7 +35,11 @@
                 <ul class="space-y-3 text-sm">
                     <li class="flex items-start">
                         <i class="fas fa-map-marker-alt mt-1 mr-3"></i>
-                        <span>123 Shopping Street, City, ST 12345</span>
+                        <span>
+                            Floor -10994, Challenger Deep<br>
+                            Mariana Trench, Pacific Ocean<br>
+                            Nearest Landmark: Pressure 1000+ atm
+                        </span>
                     </li>
                     <li class="flex items-center">
                         <i class="fas fa-phone mr-3"></i>

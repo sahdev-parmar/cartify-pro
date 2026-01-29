@@ -52,6 +52,7 @@ Route::middleware('guest')->group(function (){
 
 
 Route::get('/home',[HomeController::class,'show'])->name('home');
+Route::view('/contact-us','contactus.contact-us')->name('contact-us');
 Route::get('/category/filter', [CategoryController::class, 'filterCategory'])->name('category.filter');
 Route::get('/category/{slug}', [CategoryController::class, 'showCategory'])->name('category.show');
 Route::get('/product/{slug}', [ProductDetailController::class, 'show'])->name('product.show');
