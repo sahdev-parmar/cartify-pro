@@ -37,7 +37,7 @@
                 </div>
                 <div>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Payment Method</p>
-                    <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ $order->payment_method }}</p>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ strtoupper($order->payment_method) }}</p>
                 </div>
             </div>
 

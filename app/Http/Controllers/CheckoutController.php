@@ -142,13 +142,5 @@ class CheckoutController extends Controller
 
     }
 
-    public function success($orderId)
-    {
-        $order = Order::where('id', $orderId)
-            ->where('user_id', Auth::id())
-            ->with(['items.product', 'city', 'state', 'country'])
-            ->firstOrFail();
 
-        return view('order.success', compact('order'));
-    }
 }

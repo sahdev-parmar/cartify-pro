@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\TestController;
 use App\Livewire\Admin\Admins\Adminindex;
@@ -67,8 +68,10 @@ Route::middleware(['auth'])->group(function (){
     });
     
     Route::prefix('order')->group(function(){
-        Route::get('/', [CheckoutController::class, 'success'])->name('orders.index');
-        Route::get('/success/{orderId}', [CheckoutController::class, 'success'])->name('order.success');
+        Route::get('/my-orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/{id}', [OrderController::class, 'show'])->name('order.details');
+        Route::get('/success/{orderId}', [OrderController::class, 'success'])->name('order.success');
+        Route::put('/{id}/cancel', [OrderController::class, 'cancel'])->name('order.cancel');
     });
     
     Route::prefix('cart')->group(function(){
