@@ -24,7 +24,7 @@
                 <h4 class="text-white text-lg font-bold mb-4">Quick Links</h4>
                 <ul class="space-y-2 text-sm">
                     <li><a href="{{ route('home') }}" class="hover:text-white">Home</a></li>
-                    <li><a href="" class="hover:text-white">Products</a></li>
+                    <li><a href="{{route('products.index')}}" class="hover:text-white">Products</a></li>
                     <li><a href="{{route('contact-us')}}" class="hover:text-white">Contact Us</a></li>
                 </ul>
             </div>
@@ -47,7 +47,7 @@
                     </li>
                     <li class="flex items-center">
                         <i class="fas fa-envelope mr-3"></i>
-                        <span>info@cartifypro.com</span>
+                        <span>info@donaldduck.com</span>
                     </li>
                 </ul>
             </div>

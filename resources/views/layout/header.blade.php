@@ -1,4 +1,4 @@
- <!-- Header -->
+<!-- Header -->
 <header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
 
     <!-- Main Header -->
@@ -15,21 +15,29 @@
                 </a>
 
                 <!-- Search Bar -->
-                <div class="hidden md:flex flex-1 max-w-2xl mx-8">
-                    <form class="w-full" action="" method="GET">
+                @if(!request()->routeIs('category.*'))
+                <div class="hidden md:flex flex-1 max-w-2xl mx-8 relative">
+                    <form class="w-full" id="headerSearchForm">
                         <div class="relative">
                             <input 
                                 type="text" 
-                                name="q"
+                                id="headerSearch"
                                 placeholder="Search for products..." 
+                                autocomplete="off"
                                 class="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
                             <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700">
                                 <i class="fas fa-search"></i>
                             </button>
                         </div>
+                        
+                        <!-- Search Suggestions Dropdown -->
+                        <div id="searchSuggestions" class="hidden absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 max-h-96 overflow-y-auto z-50">
+                            <!-- Suggestions will be loaded here -->
+                        </div>
                     </form>
                 </div>
+                @endif
 
                 <!-- Right Side Actions -->
                 <div class="flex items-center space-x-4">
@@ -133,8 +141,8 @@
                         </div>
                     </li>
                     <li>
-                        <a href="" class="px-4 py-3  transition-colors flex items-center font-medium
-                        {{ request()->routeIs('product.*')
+                        <a href="{{route('products.index')}}" class="px-4 py-3  transition-colors flex items-center font-medium
+                        {{ request()->routeIs('products.*')
                         ? ' dark:bg-gray-800 text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-800'
                         : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-gray-800' }}">
                             <i class="fas fa-box-open mr-2"></i>
@@ -163,20 +171,23 @@
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="hidden md:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
         <div class="container mx-auto px-4 py-2">
-            <!-- Mobile Search -->
-            <form class="mb-4" action="" method="GET">
+            <!-- Mobile Search (Only on Home & Products Page) -->
+            @if(!request()->routeIs('category.*'))
+            <form class="mb-4" id="mobileSearchForm">
                 <input 
                     type="text" 
-                    name="q"
+                    id="mobileSearchInput"
                     placeholder="Search products..." 
+                    autocomplete="off"
                     class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 >
             </form>
+            @endif
             
             <!-- Mobile Navigation Links -->
             <ul class="space-y-1">
                 <li>
-                    <a href="" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                    <a href="{{route('home')}}" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
                         <i class="fas fa-home mr-2"></i>Home
                     </a>
                 </li>
@@ -187,18 +198,18 @@
                         </a>
                     </li>
                     <li>
-                        <a href="" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                        <a href="{{route('orders.index')}}" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
                             <i class="fas fa-shopping-bag mr-2"></i>My Orders
                         </a>
                     </li>
                 @endauth
                 <li>
-                    <a href="" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                    <a href="{{route('products.index')}}" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
                         <i class="fas fa-box-open mr-2"></i>Products
                     </a>
                 </li>
                 <li>
-                    <a href="" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                    <a href="{{route('contact-us')}}" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
                         <i class="fas fa-envelope mr-2"></i>Contact Us
                     </a>
                 </li>
@@ -206,3 +217,128 @@
         </div>
     </div>
 </header>
+
+<!-- Search Autocomplete Script -->
+@if(!request()->routeIs('category.*'))
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+                let searchTimeout;
+                
+                // Desktop search autocomplete
+                $('#headerSearch').on('keyup', function(e) {
+                    const query = $(this).val().trim();
+                    
+                    // Clear previous timeout
+                    clearTimeout(searchTimeout);
+                    
+                    if (query.length < 2) {
+                        $('#searchSuggestions').addClass('hidden');
+                        return;
+                    }
+                    
+                    // Set new timeout
+                    searchTimeout = setTimeout(function() {
+                        loadSearchSuggestions(query);
+                    }, 300);
+                });
+                
+                // Desktop search form submit
+                $('#headerSearchForm').on('submit', function(e) {
+                    e.preventDefault();
+                    const query = $('#headerSearch').val().trim();
+                    
+                    if (query) {
+                        // If on home page, go to products page with search
+                        @if(!request()->routeIs('products.*'))
+                            window.location.href = '{{ route("products.index") }}?q=' + encodeURIComponent(query);
+                        @else
+                            // If on products page, trigger filter
+                            searchQuery = query;
+                            currentPage = 1;
+                            loadProducts();
+                        @endif
+                    }
+                });
+                
+                // Mobile search form submit
+                $('#mobileSearchForm').on('submit', function(e) {
+                    e.preventDefault();
+                    const query = $('#mobileSearchInput').val().trim();
+                    
+                    if (query) {
+                        @if(request()->routeIs('home'))
+                            window.location.href = '{{ route("products.index") }}?q=' + encodeURIComponent(query);
+                        @else
+                            searchQuery = query;
+                            currentPage = 1;
+                            loadProducts();
+                        @endif
+                    }
+                });
+                
+                // Click outside to close suggestions
+                $(document).on('click', function(e) {
+                    if (!$(e.target).closest('#headerSearchForm').length) {
+                        $('#searchSuggestions').addClass('hidden');
+                    }
+                });
+            });
+
+            // Load search suggestions
+            function loadSearchSuggestions(query) {
+                $.ajax({
+                    url: '{{ route("products.search") }}',
+                    type: 'GET',
+                    data: { q: query },
+                    success: function(response) {
+                        if (response.products && response.products.length > 0) {
+                            renderSuggestions(response.products);
+                            $('#searchSuggestions').removeClass('hidden');
+                        } else {
+                            $('#searchSuggestions').addClass('hidden');
+                        }
+                    },
+                    error: function() {
+                        $('#searchSuggestions').addClass('hidden');
+                    }
+                });
+            }
+
+            // Render suggestions
+            function renderSuggestions(products) {
+                let html = '<div class="p-2">';
+                html += '<div class="text-xs text-gray-500 dark:text-gray-400 px-3 py-2 font-semibold">SUGGESTIONS</div>';
+                
+                products.forEach(product => {
+                    const images = product.images ? product.images.split(',') : [];
+                    const firstImage = images.length > 0 ? images[0] : null;
+                    
+                    html += `
+                        <a href="/product/${product.slug}" class="flex items-center space-x-3 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                            <div class="w-12 h-12 flex-shrink-0">
+                                ${firstImage ? 
+                                    `<img src="/storage/uploads/product/${firstImage}" alt="${product.name}" class="w-full h-full object-cover rounded">` :
+                                    `<div class="w-full h-full bg-gradient-to-br from-blue-500 to-purple-500 rounded flex items-center justify-center">
+                                        <i class="fas fa-box text-white"></i>
+                                    </div>`
+                                }
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-semibold text-gray-900 dark:text-white truncate">${product.name}</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">₹${parseFloat(product.price).toFixed(2)}</p>
+                            </div>
+                            ${product.stock_status == 1 ? 
+                                '<span class="text-xs text-green-600 dark:text-green-400"><i class="fas fa-check-circle"></i></span>' :
+                                '<span class="text-xs text-red-600 dark:text-red-400">Out of Stock</span>'
+                            }
+                        </a>
+                    `;
+                });
+                
+                html += '</div>';
+                $('#searchSuggestions').html(html);
+            }
+        </script>
+    @endpush
+@endif

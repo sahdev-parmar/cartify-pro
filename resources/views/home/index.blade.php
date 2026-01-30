@@ -14,7 +14,7 @@
                     <h1 class="text-5xl font-bold mb-6">Welcome to Cartify Pro</h1>
                     <p class="text-xl mb-8 text-gray-100">Discover amazing products at unbeatable prices. Shop now and enjoy free shipping on orders over $50!</p>
                     <div class="flex space-x-4">
-                        <a href="" class="px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                        <a href="{{route('products.index')}}" class="px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
                             View Products
                         </a>
                         <a href="{{route('contact-us')}}" class="px-8 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
@@ -73,7 +73,7 @@
                     <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Featured Products</h2>
                     <p class="text-gray-600 dark:text-gray-400">Check out our top picks for you</p>
                 </div>
-                <a href="" class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold flex items-center">
+                <a href="{{route('products.index')}}" class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold flex items-center">
                     View All
                     <i class="fas fa-arrow-right ml-2"></i>
                 </a>
