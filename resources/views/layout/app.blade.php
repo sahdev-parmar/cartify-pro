@@ -30,7 +30,7 @@
             opacity: 1;
             visibility: visible;
         }
-    </style>
+        </style>
     
     @yield('styles')
 </head>

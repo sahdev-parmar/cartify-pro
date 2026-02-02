@@ -7,9 +7,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProductDetailController;
-use App\Http\Controllers\TestController;
+use App\Http\Controllers\ProfileController;
 use App\Livewire\Admin\Admins\Adminindex;
 use App\Livewire\Admin\Categories\CategoryIndex;
 use App\Livewire\Admin\Customers\CustomerIndex;
@@ -52,6 +52,10 @@ Route::middleware('guest')->group(function (){
 });
 
 
+Route::get('/forgot-password', [PasswordResetController::class, 'showForgotForm'])->name('password.forgot');
+Route::post('/forgot-password/check-email', [PasswordResetController::class, 'checkEmail'])->name('password.check.email');
+Route::post('/password/reset', [PasswordResetController::class, 'resetPassword'])->name('password.reset.submit');
+
 Route::get('/home',[HomeController::class,'show'])->name('home');
 Route::view('/contact-us','contactus.contact-us')->name('contact-us');
 Route::get('/category/filter', [CategoryController::class, 'filterCategory'])->name('category.filter');
@@ -91,7 +95,13 @@ Route::middleware(['auth'])->group(function (){
         Route::post('/remove', [CartController::class, 'remove'])->name('cart.remove');
     });
 
-   
+    Route::prefix('My-Profile')->group(function(){
+        Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
+        Route::put('/personal', [ProfileController::class, 'updatePersonal'])->name('profile.update.personal');
+        Route::put('/address', [ProfileController::class, 'updateAddress'])->name('profile.update.address');
+        Route::put('/password', [ProfileController::class, 'updatePassword'])->name('profile.update.password');
+    });
+    
 
 
 });
