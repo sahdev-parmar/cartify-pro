@@ -14,26 +14,27 @@ use App\Livewire\Admin\Admins\Adminindex;
 use App\Livewire\Admin\Categories\CategoryIndex;
 use App\Livewire\Admin\Customers\CustomerIndex;
 use App\Livewire\Admin\Dashboard\Dashboard;
+use App\Livewire\Admin\Myprofile\Myprofileindex;
 use App\Livewire\Admin\Orders\OrderIndex;
 use App\Livewire\Admin\Product\ProductAdd;
 use App\Livewire\Admin\Product\Productindex;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+   return redirect()->route('home');;
 });
 
 Route::get('/admin', function () {
     return redirect()->route('admin.login');
 });
 
-Route::prefix('admin')->middleware(['admin-login:login'])->group(function (){   
+Route::prefix('admin')->middleware(['admin-login:login','set-gurd:admin'])->group(function (){   
     Route::view('login','adminV1.auth.login')->name("admin.login");
     Route::post('login-post',[AdminauthController::class,'auth'])->name("admin.login-post");
     Route::post('logout',[AdminauthController::class,'logout'])->name("admin.logout");
 });
 
-Route::prefix('admin')->middleware(['admin-login:dashboard'])->group(function (){
+Route::prefix('admin')->middleware(['admin-login:dashboard','set-gurd:admin'])->group(function (){
   
     Route::get('dashboard',Dashboard::class)->name('admin.dashboard');
     Route::get('category',CategoryIndex::class)->name('admin.category.index');
@@ -42,6 +43,7 @@ Route::prefix('admin')->middleware(['admin-login:dashboard'])->group(function ()
     Route::get('customers',CustomerIndex::class)->name('admin.customer.index');
     Route::get('admins',Adminindex::class)->name('admin.admins.index');
     Route::get('orders',OrderIndex::class)->name('admin.orders.index');
+    Route::get('/profile',Myprofileindex::class)->name('admin.profile.index');
 });
 
 Route::middleware('guest')->group(function (){
@@ -51,17 +53,24 @@ Route::middleware('guest')->group(function (){
     Route::post('login',[AuthController::class,'login'])->name('post-login');
 });
 
+// forgot passaword
+Route::prefix('forgot-password')->group(function(){
 
-Route::get('/forgot-password', [PasswordResetController::class, 'showForgotForm'])->name('password.forgot');
-Route::post('/forgot-password/check-email', [PasswordResetController::class, 'checkEmail'])->name('password.check.email');
+    Route::get('/', [PasswordResetController::class, 'showForgotForm'])->name('password.forgot');
+    Route::post('/check-email', [PasswordResetController::class, 'checkEmail'])->name('password.check.email');
+    Route::post('/verify-otp', [PasswordResetController::class, 'verifyOtp'])->name('password.verify.otp');
+    Route::post('/resend-otp', [PasswordResetController::class, 'resendOtp'])->name('password.resend.otp');
+});
 Route::post('/password/reset', [PasswordResetController::class, 'resetPassword'])->name('password.reset.submit');
 
+// home
 Route::get('/home',[HomeController::class,'show'])->name('home');
 Route::view('/contact-us','contactus.contact-us')->name('contact-us');
 Route::get('/category/filter', [CategoryController::class, 'filterCategory'])->name('category.filter');
 Route::get('/category/{slug}', [CategoryController::class, 'showCategory'])->name('category.show');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.show');
 
+//products
 Route::prefix('products')->group(function (){
     Route::get('/', [ProductController::class, 'index'])->name('products.index');
     Route::get('/search',[ProductController::class,'search'])->name('products.search');

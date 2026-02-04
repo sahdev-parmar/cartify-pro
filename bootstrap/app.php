@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AdminLoginRedirect;
+use App\Http\Middleware\SetDefaultGuard;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -14,7 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
          $middleware->alias([
-        'admin-login' => AdminLoginRedirect::class
+        'admin-login' => AdminLoginRedirect::class,
+        'set-gurd' => SetDefaultGuard::class
     ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

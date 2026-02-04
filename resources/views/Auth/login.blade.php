@@ -144,9 +144,9 @@
                             <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
                         </label>
 
-                        {{-- <a href="{{ route('password.request') }}" class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
+                        <a href="{{ route('password.forgot') }}" class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
                             Forgot password?
-                        </a> --}}
+                        </a>
                     </div>
 
                     <!-- Submit Button -->

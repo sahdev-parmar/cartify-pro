@@ -12,9 +12,28 @@
     @vite('resources/css/app.css')
 </head>
 <body>
+    <!-- Success/Error Messages -->
+    <div class="fixed top-4 right-4 z-50 hidden bg-green-100 dark:bg-green-900 border border-green-200 dark:border-green-800 rounded-xl p-4 shadow-lg" id="successMessage">
+        <div class="flex items-center">
+            <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <p class="text-sm text-green-800 dark:text-green-300" id="successText"></p>
+        </div>
+    </div>
     <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-md w-full">
             
+            <!-- Dark Mode Toggle -->
+            <div class="flex justify-end mb-4">
+                <button 
+                    onclick="toggleDarkMode()" 
+                    class="p-2 rounded-lg h-10 w-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    title="Toggle Dark Mode"
+                >
+                    <i class="fas fa-moon text-gray-600 dark:text-gray-300" id="darkModeIcon"></i>
+                </button>
+            </div>
             <!-- Card -->
             <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-200 dark:border-gray-700">
                 
@@ -62,9 +81,16 @@
                     </form>
 
                     <div class="mt-6 text-center">
-                        <a href="{{ route('login') }}" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
-                            <i class="fas fa-arrow-left mr-1"></i>Back to Login
-                        </a>
+                        @guest
+                            <a href="{{ route('login') }}" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                                <i class="fas fa-arrow-left mr-1"></i>Back to Login
+                            </a>
+                        @else
+                            <a href="{{ route('home') }}" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                                <i class="fas fa-arrow-left mr-1"></i>Back to Home
+                            </a>
+                        @endguest
+
                     </div>
                 </div>
 
@@ -88,9 +114,6 @@
                                 <p class="text-sm font-semibold text-yellow-800 dark:text-yellow-200">Demo Version</p>
                                 <p class="text-xs text-yellow-700 dark:text-yellow-300 mt-1">
                                     Your OTP is: <span id="demoOtp" class="font-bold text-lg">------</span>
-                                </p>
-                                <p class="text-xs text-yellow-600 dark:text-yellow-400 mt-1">
-                                    (In production, this would be sent to your email)
                                 </p>
                             </div>
                         </div>
@@ -138,7 +161,7 @@
                         </p>
                     </div>
 
-                    <form id="resetForm" action="{{ route('password.reset.submit') }}" method="POST">
+                    <form id="resetForm">
                         @csrf
                         <input type="hidden" name="email" id="resetEmail">
                         
@@ -152,15 +175,15 @@
                                     type="password" 
                                     name="password" 
                                     id="newPasswordReset"
-                                    required
-                                    minlength="8"
+                                    minlength="6"
                                     class="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                                 >
                                 <button type="button" onclick="togglePasswordVisibility('newPasswordReset')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Minimum 8 characters</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Minimum 6 characters</p>
+                            <div id="passwordError" class="hidden text-red-500 text-sm mt-1"></div>
                         </div>
 
                         <!-- Confirm Password -->
@@ -173,14 +196,14 @@
                                     type="password" 
                                     name="password_confirmation" 
                                     id="confirmPasswordReset"
-                                    required
-                                    minlength="8"
+                                    minlength="6"
                                     class="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                                 >
                                 <button type="button" onclick="togglePasswordVisibility('confirmPasswordReset')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
+                            <div id="confirmPasswordError" class="hidden text-red-500 text-sm mt-1"></div>
                         </div>
 
                         <button type="submit" class="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-semibold shadow-lg">
@@ -191,20 +214,39 @@
             </div>
 
             <!-- Footer -->
-            <div class="text-center mt-6">
-                <p class="text-sm text-gray-600 dark:text-gray-400">
-                    Remember your password? 
-                    <a href="{{ route('login') }}" class="text-blue-600 dark:text-blue-400 font-semibold hover:underline">Login</a>
-                </p>
-            </div>
+            @guest
+                <div class="text-center mt-6">
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        Remember your password? 
+                        <a href="{{ route('login') }}" class="text-blue-600 dark:text-blue-400 font-semibold hover:underline">Login</a>
+                    </p>
+                </div>
+            @endguest
         </div>
     </div>
 
-    <script>
-    let generatedOtp = '';
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    function toggleDarkMode() {
+        const html = document.documentElement;
+        const icon = document.getElementById('darkModeIcon');
+        
+        if (html.classList.contains('dark')) {
+            html.classList.remove('dark');
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+            localStorage.setItem('darkMode', 'light');
+        } else {
+            html.classList.add('dark');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+            localStorage.setItem('darkMode', 'dark');
+        }
+    }
+
     let userEmail = '';
 
-    // Step 1: Send OTP
+    // Step 1: Send OTP (Server-side generation)
     $('#emailForm').on('submit', function(e) {
         e.preventDefault();
         
@@ -216,7 +258,7 @@
             return;
         }
         
-        // Check if user exists (AJAX)
+        // Check if user exists and generate OTP on server
         $.ajax({
             url: '{{ route("password.check.email") }}',
             type: 'POST',
@@ -227,19 +269,21 @@
             success: function(response) {
                 if (response.exists) {
                     userEmail = email;
-                    generateOtp();
+                    $('#displayEmail').text(email);
+                    // Display server-generated OTP (demo version)
+                    $('#demoOtp').text(response.otp);
                     showStep(2);
                 } else {
                     showError('#emailError', 'No account found with this email address');
                 }
             },
-            error: function() {
-                showError('#emailError', 'An error occurred. Please try again.');
+            error: function(xhr) {
+                showError('#emailError', xhr.responseJSON?.message || 'An error occurred. Please try again.');
             }
         });
     });
 
-    // Step 2: Verify OTP
+    // Step 2: Verify OTP (Server-side verification)
     $('#otpForm').on('submit', function(e) {
         e.preventDefault();
         
@@ -250,33 +294,110 @@
             return;
         }
         
-        if (enteredOtp === generatedOtp) {
-            $('#resetEmail').val(userEmail);
-            showStep(3);
-        } else {
-            showError('#otpError', 'Invalid OTP. Please try again.');
-            $('.otp-input').addClass('border-red-500');
-        }
+        // Verify OTP on server
+        $.ajax({
+            url: '{{ route("password.verify.otp") }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                otp: enteredOtp
+            },
+            success: function(response) {
+                if (response.valid) {
+                    $('#resetEmail').val(userEmail);
+                    showStep(3);
+                } else {
+                    showError('#otpError', response.message || 'Invalid OTP. Please try again.');
+                    $('.otp-input').addClass('border-red-500');
+                    $('.otp-input').val('').first().focus();
+                }
+            },
+            error: function(xhr) {
+                showError('#otpError', xhr.responseJSON?.message || 'Invalid OTP. Please try again.');
+                $('.otp-input').addClass('border-red-500');
+                $('.otp-input').val('').first().focus();
+            }
+        });
     });
 
-    // Generate OTP (Demo)
-    function generateOtp() {
-        generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-        $('#demoOtp').text(generatedOtp);
-        $('#displayEmail').text(userEmail);
+    // Resend OTP (Server-side regeneration)
+    function resendOtp() {
+        $.ajax({
+            url: '{{ route("password.resend.otp") }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Display new server-generated OTP (demo version)
+                    $('#demoOtp').text(response.otp);
+                    $('.otp-input').val('').first().focus();
+                    $('#otpError').addClass('hidden');
+                    
+                    // Show success message
+                    const message = $('<div class="text-green-600 dark:text-green-400 text-sm mt-2">OTP resent successfully!</div>');
+                    $('#otpForm').prepend(message);
+                    setTimeout(() => message.fadeOut(), 3000);
+                } else {
+                    showError('#otpError', response.message || 'Failed to resend OTP');
+                }
+            },
+            error: function(xhr) {
+                showError('#otpError', xhr.responseJSON?.message || 'Failed to resend OTP. Please try again.');
+            }
+        });
     }
 
-    // Resend OTP
-    function resendOtp() {
-        generateOtp();
-        $('.otp-input').val('').first().focus();
-        $('#otpError').addClass('hidden');
+    // Step 3: Reset Password (AJAX submission)
+    $('#resetForm').on('submit', function(e) {
+        e.preventDefault();
         
-        // Show success message
-        const message = $('<div class="text-green-600 dark:text-green-400 text-sm mt-2">OTP resent successfully!</div>');
-        $('#otpForm').prepend(message);
-        setTimeout(() => message.fadeOut(), 3000);
-    }
+        // Clear previous errors
+        $('#passwordError').addClass('hidden');
+        $('#confirmPasswordError').addClass('hidden');
+        
+        const password = $('#newPasswordReset').val();
+        const confirmPassword = $('#confirmPasswordReset').val();
+        const email = $('#resetEmail').val();
+        
+        // Submit via AJAX
+        $.ajax({
+            url: '{{ route("password.reset.submit") }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                email: email,
+                password: password,
+                password_confirmation: confirmPassword
+            },
+            success: function(response) {
+                // Show success message
+                showSuccess('Password reset successfully! Redirecting to login...');
+                
+                // Redirect to login
+                window.location.href = '{{ route("login") }}';
+            },
+            error: function(xhr) {
+                if (xhr.status === 422) {
+                    // Validation errors
+                    const errors = xhr.responseJSON.errors;
+                    if (errors.password) {
+                        showError('#passwordError', errors.password[0]);
+                    }
+                    if (errors.password_confirmation) {
+                        showError('#confirmPasswordError', errors.password_confirmation[0]);
+                    }
+                    if (errors.email) {
+                        alert(errors.email[0]);
+                    }
+                } else {
+                    // Other errors
+                    alert(xhr.responseJSON?.message || 'An error occurred. Please try again.');
+                }
+            }
+        });
+    });
 
     // OTP Input handling
     $('.otp-input').on('input', function() {
@@ -345,6 +466,13 @@
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
+    // Show success message
+    function showSuccess(message) {
+        $('#successText').text(message);
+        $('#successMessage').removeClass('hidden');
+        setTimeout(() => $('#successMessage').addClass('hidden'), 3000);
+    }
+
     function togglePasswordVisibility(id) {
         const input = document.getElementById(id);
         const icon = event.target.closest('button').querySelector('i');
@@ -359,6 +487,6 @@
             icon.classList.add('fa-eye');
         }
     }
-    </script>
+</script>
 </body>
 </html>
