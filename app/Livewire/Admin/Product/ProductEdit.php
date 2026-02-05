@@ -44,6 +44,12 @@ class ProductEdit extends Component
         ]);
     }
 
+
+    public function sendMessage($message)
+    {
+        $this->dispatch('message', message:$message);
+    }
+    
     public function closeEditModal()
     {
         $this->dispatch('closeEditModal'); //pass to index livewire component
@@ -141,8 +147,9 @@ class ProductEdit extends Component
         ]);
 
         sleep(1);
-        $this->dispatch('closeEditModal'); //pass to index livewire component
         $this->reset();
+         $this->sendMessage('Product edited successfully.');
+        $this->dispatch('closeEditModal'); //pass to index livewire component
 
     }
 }

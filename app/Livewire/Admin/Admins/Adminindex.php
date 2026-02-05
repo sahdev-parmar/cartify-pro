@@ -71,6 +71,7 @@ class Adminindex extends Component
 
     public function resetFilters()
     {
+        session()->flash('message', 'Reset Filters successfully.');
         $this->reset('typeFilter','sessionFilter','statusFilter');
     }
 
@@ -100,6 +101,12 @@ class Adminindex extends Component
     {
         $user = User::findOrFail($id);
         $user->update(['status' => !$user->status]);
+    }
+
+    #[On('message')]
+    public function showMessage($message = null)
+    {
+       session()->flash('message', $message);
     }
 
     #[On('closeAddModal')]

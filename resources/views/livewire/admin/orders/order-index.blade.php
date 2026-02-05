@@ -1,5 +1,15 @@
 <div class="space-y-6">
-    
+       <!-- Success Message -->
+        @if (session()->has('message'))
+            <div class="bg-green-50 absolute right-[10px] top-[10px] w-100 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4 z-100" wire:poll.3s>
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <p class="text-sm text-green-800 dark:text-green-300">{{ session('message') }}</p>
+                </div>
+            </div>
+        @endif
 
     <!-- Header -->
     @section('page-title')

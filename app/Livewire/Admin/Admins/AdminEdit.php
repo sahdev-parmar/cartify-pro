@@ -54,7 +54,7 @@ class AdminEdit extends Component
 
     }
 
-    
+   
     public function updatedCountryId($value)
     {
         $this->state_id = null;
@@ -124,6 +124,7 @@ class AdminEdit extends Component
         ]);
         sleep(1);
         $this->resetExcept('editUserId');
+        $this->sendMessage('User edited successfully.');
         $this->closeEditModal();
     }
 
@@ -136,4 +137,10 @@ class AdminEdit extends Component
     {
         $this->dispatch('closeEditModal');
     }
+
+    public function sendMessage($message)
+    {
+        $this->dispatch('message', message:$message);
+    }
+    
 }

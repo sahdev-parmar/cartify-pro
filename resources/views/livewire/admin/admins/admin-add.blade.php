@@ -1,5 +1,5 @@
 <div>
-    h<!-- Add Admin Modal -->
+    <!-- Add Admin Modal -->
     <div class="fixed inset-0 z-50 overflow-y-auto">
         <!-- Dark Backdrop -->
         <div class="fixed inset-0 backdrop-blur-lg bg-black/80 transition-opacity" wire:click="closeAddModal"></div>

@@ -59,6 +59,7 @@ class OrderIndex extends Component
     public function resetFilters()
     {
         $this->reset('statusFilter','dateFilter');    
+        session()->flash('message', 'Reset Filters successfully.');
     }
     public function toggleDropdown($id)
     {
@@ -80,6 +81,7 @@ class OrderIndex extends Component
     public function updateStatus($id,$value)
     {
         Order::find($id)->update(['status' => $value]);
+        session()->flash('message', 'Update Status successfully.');
         $this->reset('openDropdown');
     }
 

@@ -83,6 +83,11 @@ class CustomersEdit extends Component
         }
     }
 
+    public function sendMessage($message)
+    {
+        $this->dispatch('message', message:$message);
+    }
+
     public function closeEditModal()
     {
         $this->dispatch('closeUserEditModal');
@@ -130,6 +135,7 @@ class CustomersEdit extends Component
         sleep(1);
         $this->resetExcept('editUserId');
         $this->closeEditModal();
+        $this->sendMessage('User Edited successfully');
     }
 
     public function render()

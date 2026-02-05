@@ -22,6 +22,11 @@ class AdminAdd extends Component
         $this->dispatch('closeAddModal');
     }
 
+    public function sendMessage($message)
+    {
+        $this->dispatch('message', message:$message);
+    }
+
     public function updatedCountryId($value)
     {
         $this->state_id = null;
@@ -86,6 +91,7 @@ class AdminAdd extends Component
         ]);
         sleep(1);
         $this->reset();
+        $this->sendMessage('User created successfully.');
         $this->closeAddModal();
     }
 
