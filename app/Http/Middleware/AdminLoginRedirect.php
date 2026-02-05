@@ -21,6 +21,7 @@ class AdminLoginRedirect
                 return redirect()->route('admin.dashboard');
             }
         }
+        
         if($type == 'dashboard'){
 
             if (!Auth::guard('admin')->check() || Auth::guard('admin')->user()->type == 'user') {

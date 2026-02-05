@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Middleware\AdminLoginRedirect;
+use App\Http\Middleware\EnsureNoCache;
+use App\Http\Middleware\PreventBackHistory;
 use App\Http\Middleware\SetDefaultGuard;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -14,10 +16,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-         $middleware->alias([
-        'admin-login' => AdminLoginRedirect::class,
-        'set-gurd' => SetDefaultGuard::class
-    ]);
+        $middleware->alias([
+            'admin-login' => AdminLoginRedirect::class,
+        ]);
+
+        $middleware->web(append: [
+            SetDefaultGuard::class,
+        ]);
+    
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -28,13 +28,13 @@ Route::get('/admin', function () {
     return redirect()->route('admin.login');
 });
 
-Route::prefix('admin')->middleware(['admin-login:login','set-gurd:admin'])->group(function (){   
+Route::prefix('admin')->middleware(['admin-login:login'])->group(function (){   
     Route::view('login','adminV1.auth.login')->name("admin.login");
     Route::post('login-post',[AdminauthController::class,'auth'])->name("admin.login-post");
     Route::post('logout',[AdminauthController::class,'logout'])->name("admin.logout");
 });
 
-Route::prefix('admin')->middleware(['admin-login:dashboard','set-gurd:admin'])->group(function (){
+Route::prefix('admin')->middleware(['admin-login:dashboard'])->group(function (){
   
     Route::get('dashboard',Dashboard::class)->name('admin.dashboard');
     Route::get('category',CategoryIndex::class)->name('admin.category.index');

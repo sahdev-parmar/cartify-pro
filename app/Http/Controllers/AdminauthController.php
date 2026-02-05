@@ -43,7 +43,7 @@ class AdminauthController extends Controller
                     ]);
                 }
 
-                
+                session(['active_guard' => 'admin']); //for set-gurd middleware global middleware
                 return redirect()->route('admin.dashboard');
 
             }
@@ -58,8 +58,9 @@ class AdminauthController extends Controller
     public function logout(Request $request)
     {
         Auth::guard('admin')->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect()->route('admin.login');
+        session()->forget('active_guard'); //for set gurd middleare so destroy
+        // $request->session()->invalidate(); //this goes error
+        $request->session()->regenerate(); //use for error of mismatch 419 sessin expiration 
+        return redirect()->route('admin.login'); 
     }
 }

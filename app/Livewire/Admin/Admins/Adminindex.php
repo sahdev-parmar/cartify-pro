@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Admins;
 
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -86,6 +87,11 @@ class Adminindex extends Component
         DB::table('sessions')
             ->where('user_id', $userId)
             ->delete();
+
+        // 2. Invalidate Remember Me token
+        $user = \App\Models\User::find($userId);
+        $user->setRememberToken(Str::random(60));
+        $user->save();    
 
         session()->flash('message', 'All sessions revoked successfully.');
     }
