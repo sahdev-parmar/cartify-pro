@@ -73,7 +73,7 @@
             </div>
 
             <!-- Role Badge -->
-            <div class="inline-flex items-center px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-semibold">
+            <div class="inline-flex items-center mt-4 px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-semibold">
                 <i class="fas fa-shield-alt mr-2"></i>{{ strtoupper($user->type)}}
             </div>
         </div>
@@ -83,13 +83,13 @@
     <div class="lg:col-span-3">
         
         <!-- Success Message -->
-        @if (session()->has('success'))
-            <div class="mb-6 bg-green-100 dark:bg-green-900 border border-green-200 dark:border-green-800 rounded-xl p-4">
+        @if (session()->has('message'))
+            <div class="bg-green-50 absolute right-[10px] top-[10px] w-100 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4" wire:poll.2s>
                 <div class="flex items-center">
                     <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <p class="text-sm text-green-800 dark:text-green-300">{{ session('success') }}</p>
+                    <p class="text-sm text-green-800 dark:text-green-300">{{ session('message') }}</p>
                 </div>
             </div>
         @endif
@@ -241,7 +241,7 @@
                         Country <span class="text-red-500">*</span>
                     </label>
                     <select 
-                        wire:model="country_id"
+                        wire:model.live="country_id"
                         class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Select Country</option>
@@ -258,7 +258,7 @@
                         State <span class="text-red-500">*</span>
                     </label>
                     <select 
-                        wire:model="state_id"
+                        wire:model.live="state_id"
                         class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                         {{ !$country_id ? 'disabled' : '' }}
                     >
@@ -276,7 +276,7 @@
                         City <span class="text-red-500">*</span>
                     </label>
                     <select 
-                        wire:model.defer="city_id"
+                        wire:model.live="city_id"
                         class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                         {{ !$state_id ? 'disabled' : '' }}
                     >
@@ -317,12 +317,27 @@
                     <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                         Current Password <span class="text-red-500">*</span>
                     </label>
-                    <input 
-                        type="password" 
-                        wire:model.defer="current_password"
-                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-                    >
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            id="current_password"
+                            wire:model.defer="current_password"
+                            class="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                        >
+                        <button 
+                            type="button" 
+                            onclick="togglePassword('current_password')"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                        >
+                            <i class="fas fa-eye" id="current_password_icon"></i>
+                        </button>
+                    </div>
                     @error('current_password') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    <div class="mt-2">
+                        <a href="" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                            <i class="fas fa-question-circle mr-1"></i>Forgot Password?
+                        </a>
+                    </div>
                 </div>
 
                 <!-- New Password -->
@@ -330,12 +345,22 @@
                     <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                         New Password <span class="text-red-500">*</span>
                     </label>
-                    <input 
-                        type="password" 
-                        wire:model.defer="new_password"
-                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-                    >
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Minimum 8 characters</p>
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            id="new_password"
+                            wire:model.defer="new_password"
+                            class="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                        >
+                        <button 
+                            type="button" 
+                            onclick="togglePassword('new_password')"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                        >
+                            <i class="fas fa-eye" id="new_password_icon"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Minimum 6 characters</p>
                     @error('new_password') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
@@ -344,11 +369,21 @@
                     <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                         Confirm New Password <span class="text-red-500">*</span>
                     </label>
-                    <input 
-                        type="password" 
-                        wire:model.defer="new_password_confirmation"
-                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-                    >
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            id="new_password_confirmation"
+                            wire:model.defer="new_password_confirmation"
+                            class="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                        >
+                        <button 
+                            type="button" 
+                            onclick="togglePassword('new_password_confirmation')"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                        >
+                            <i class="fas fa-eye" id="new_password_confirmation_icon"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Submit Button -->
@@ -369,3 +404,20 @@
         @endif
     </div>
 </div>
+
+<script>
+function togglePassword(fieldId) {
+    const passwordField = document.getElementById(fieldId);
+    const icon = document.getElementById(fieldId + '_icon');
+    
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        passwordField.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+</script>

@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Myprofile;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -32,6 +33,7 @@ class Myprofileindex extends Component
     public $countries = [];
     public $states = [];
     public $cities = [];
+
 
     public function mount()
     {
@@ -69,6 +71,115 @@ class Myprofileindex extends Component
     private function loadCities()
     {
         $this->cities = City::where('state_id', $this->state_id)->get();
+    }
+
+    public function switchTab($tab)
+    {
+        $this->activeTab = $tab;
+        $this->resetErrorBag();
+    }
+
+    public function updatedCountryId($value)
+    {
+        $this->state_id = null;
+        $this->city_id = null;
+        $this->states = [];
+        $this->cities = [];
+        
+        if ($value) {
+            $this->loadStates();
+        }
+    }
+
+    public function updatedStateId($value)
+    {
+        $this->city_id = null;
+        $this->cities = [];
+        
+        if ($value) {
+            $this->loadCities();
+        }
+    }
+
+    public function updatePersonalInfo()
+    {
+        $this->validate([
+            'name' => 'required|string',
+            'mobile_number' => 'required|string|min:10|max:20',
+            'newImage' => 'nullable|image'
+        ]);
+
+        $user = Auth::guard('admin')->user();
+
+        // Handle image upload
+        if ($this->newImage) {
+            // Store new image
+            $extension = $this->newImage->getClientOriginalExtension();
+            $imageName = "user_" .now().".".$extension;
+            $this->newImage->storeAs('uploads/user',$imageName,'public');
+            $user->image = $imageName;
+            $this->image = $imageName;
+        }
+
+        $user->name = $this->name;
+        $user->mobile_number = $this->mobile_number;
+        $user->save();
+
+        $this->newImage = null;
+        
+        session()->flash('message', 'Personal information updated successfully!');
+    }
+
+    public function updateAddress()
+    {
+        $this->validate([
+            'address' => 'required|string',
+            'country_id' => 'required',
+            'state_id' => 'required',
+            'city_id' => 'required'
+        ]);
+
+        $user = Auth::guard('admin')->user();
+        $user->address = $this->address;
+        $user->country_id = $this->country_id;
+        $user->state_id = $this->state_id;
+        $user->city_id = $this->city_id;
+        $user->save();
+
+        session()->flash('message', 'Address updated successfully!');
+    }
+
+    public function updatePassword()
+    {
+        $this->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = Auth::guard('admin')->user();
+
+        // Check current password
+        if (!Hash::check($this->current_password, $user->password)) {
+            $this->addError('current_password', 'Current password is incorrect');
+            return;
+        }
+
+        // Check if new password is same as current
+        if (Hash::check($this->new_password, $user->password)) {
+            $this->addError('new_password', 'New password cannot be the same as current password');
+            return;
+        }
+
+        // Update password
+        $user->password = Hash::make($this->new_password);
+        $user->save();
+
+        // Reset fields
+        $this->current_password = '';
+        $this->new_password = '';
+        $this->new_password_confirmation = '';
+
+        session()->flash('message', 'Password changed successfully!');
     }
 
     public function render()
