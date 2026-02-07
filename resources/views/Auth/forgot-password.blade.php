@@ -40,7 +40,7 @@
                 <!-- Logo -->
                 <div class="text-center mb-8">
                     <a href="{{ route('home') }}" class="inline-block">
-                        <img src="{{asset('favicon.ico')}}" alt="Logo" class="h-16 w-16 mx-auto mb-4">
+                        <img src="{{asset('favicon.ico')}}" alt="Logo" class="h-16 w-20 mx-auto mb-4 rounded-lg">
                         <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                             Cartify Pro
                         </h1>
@@ -241,6 +241,16 @@
             icon.classList.remove('fa-moon');
             icon.classList.add('fa-sun');
             localStorage.setItem('darkMode', 'dark');
+        }
+    }
+
+    // Initialize dark mode
+    if (localStorage.getItem('darkMode') === 'dark' || 
+        (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        if(document.getElementById('darkModeIcon')) {
+            document.getElementById('darkModeIcon').classList.remove('fa-moon');
+            document.getElementById('darkModeIcon').classList.add('fa-sun');
         }
     }
 

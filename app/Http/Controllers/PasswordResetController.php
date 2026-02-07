@@ -22,7 +22,8 @@ class PasswordResetController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if ($user) {
+
+        if ($user && $user->type == 'user') {
             // Generate 6-digit OTP
             $otp = rand(100000, 999999);
             

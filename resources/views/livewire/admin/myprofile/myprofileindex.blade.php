@@ -334,7 +334,7 @@
                     </div>
                     @error('current_password') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     <div class="mt-2">
-                        <a href="" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                        <a href="{{route('admin.forgot-password')}}" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
                             <i class="fas fa-question-circle mr-1"></i>Forgot Password?
                         </a>
                     </div>

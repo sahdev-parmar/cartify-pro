@@ -28,14 +28,17 @@ Route::get('/admin', function () {
     return redirect()->route('admin.login');
 });
 
+// admin login routes
 Route::prefix('admin')->middleware(['admin-login:login'])->group(function (){   
     Route::view('login','adminV1.auth.login')->name("admin.login");
     Route::post('login-post',[AdminauthController::class,'auth'])->name("admin.login-post");
     Route::post('logout',[AdminauthController::class,'logout'])->name("admin.logout");
 });
 
+Route::view('admin/forgot-password','livewire.admin.forgot-password.layout-for-password')->name('admin.forgot-password');
+
+// admin dashboard routes
 Route::prefix('admin')->middleware(['admin-login:dashboard'])->group(function (){
-  
     Route::get('dashboard',Dashboard::class)->name('admin.dashboard');
     Route::get('category',CategoryIndex::class)->name('admin.category.index');
     Route::get('product',Productindex::class)->name('admin.product.index');
@@ -46,6 +49,7 @@ Route::prefix('admin')->middleware(['admin-login:dashboard'])->group(function ()
     Route::get('/profile',Myprofileindex::class)->name('admin.profile.index');
 });
 
+// web login routes
 Route::middleware('guest')->group(function (){
     Route::get('register',[AuthController::class,'index'])->name('register');
     Route::post('regoster',[AuthController::class,'store'])->name('post-register');
@@ -70,7 +74,7 @@ Route::get('/category/filter', [CategoryController::class, 'filterCategory'])->n
 Route::get('/category/{slug}', [CategoryController::class, 'showCategory'])->name('category.show');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.show');
 
-//products
+// products
 Route::prefix('products')->group(function (){
     Route::get('/', [ProductController::class, 'index'])->name('products.index');
     Route::get('/search',[ProductController::class,'search'])->name('products.search');
@@ -83,12 +87,14 @@ Route::middleware(['auth'])->group(function (){
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+    // checkout process
     Route::prefix('checkout')->group(function(){
         Route::get('/', [CheckoutController::class, 'index'])->name('checkout.index');
         Route::post('/buy', [CheckoutController::class, 'buynow'])->name('checkout.buynow');
         Route::post('/process', [CheckoutController::class, 'process'])->name('checkout.process');
     });
     
+    // order routes
     Route::prefix('order')->group(function(){
         Route::get('/my-orders', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/{id}', [OrderController::class, 'show'])->name('order.details');
@@ -96,6 +102,7 @@ Route::middleware(['auth'])->group(function (){
         Route::put('/{id}/cancel', [OrderController::class, 'cancel'])->name('order.cancel');
     });
     
+    // cart routes
     Route::prefix('cart')->group(function(){
         Route::post('/add',[CartController::class,'add'])->name('cart.add');
         Route::get('/count', [CartController::class, 'getCount'])->name('cart.count');
@@ -104,6 +111,7 @@ Route::middleware(['auth'])->group(function (){
         Route::post('/remove', [CartController::class, 'remove'])->name('cart.remove');
     });
 
+    // user profile routes
     Route::prefix('My-Profile')->group(function(){
         Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
         Route::put('/personal', [ProfileController::class, 'updatePersonal'])->name('profile.update.personal');

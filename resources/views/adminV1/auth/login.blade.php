@@ -131,7 +131,7 @@
                         </div>
 
                         <div class="text-sm">
-                            <a href="/admin/password/reset" class="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
+                            <a href="{{route('admin.forgot-password')}}" class="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
                                 Forgot password?
                             </a>
                         </div>
