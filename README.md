@@ -1,59 +1,391 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🛒 Cartify Pro - Laravel E-commerce Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-11.x-red.svg)
+![Livewire](https://img.shields.io/badge/Livewire-3.x-purple.svg)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-blue.svg)
 
-## About Laravel
+A modern, full-featured e-commerce platform built with Laravel 12, featuring a Livewire-powered admin dashboard and AJAX-driven frontend.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📸 Screenshots
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Admin Dashboard
+![Admin Dashboard](screenshots/admin-dashboard.png)
+*Livewire-powered admin panel with real-time updates*
 
-## Learning Laravel
+### Super Admin Panel
+![Super Admin](screenshots/super-admin.png)
+*Advanced admin controls and Super Admin Revork Admin sessions*
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Admin Orders Management
+![Admin Orders](screenshots/admin-orders.png)
+*Admin Mange Orders*
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### User Frontend
+![User Dashboard](screenshots/home.png)
+*Modern, responsive user interface*
 
-## Laravel Sponsors
+### Product Catalog
+![Products](screenshots/products.png)
+*Advanced filtering and search functionality*
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Product View
+![Product View](screenshots/product-view.png)
+*Full Detail Product View*
 
-### Premium Partners
+### Checkout Process
+![Checkout](screenshots/checkout.png)
+*Streamlined checkout experience*
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### User Register
+![User Register](screenshots/userregiter.png)
+*Detailed User Register Page*
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## ✨ Features
 
-## Code of Conduct
+### 🎯 Core Features
+- ✅ Multi-role Authentication (Super Admin, Admin, User)
+- ✅ Product Management (CRUD with images)
+- ✅ Category Management (Multi-level categories)
+- ✅ Shopping Cart (AJAX-powered)
+- ✅ Order Management System
+- ✅ User Profile Management
+- ✅ Address Management with Cascading Dropdowns
+- ✅ Search & Filter Products
+- ✅ Dark Mode Support
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 👨‍💼 Admin Features (Livewire)
+- ✅ Real-time Dashboard Statistics
+- ✅ Super Admin Revork Other Admin sessions
+- ✅ Product Management (Add/Edit/Delete)
+- ✅ Category Management
+- ✅ Order Management
+- ✅ User Management
+- ✅ Admin Profile Settings
+- ✅ No Page Reload (Full Livewire)
+- ✅ Image Upload with Preview
+- ✅ Forgot Password with OTP
+- ✅ Session Management
 
-## Security Vulnerabilities
+### 🛍️ User Features (AJAX)
+- ✅ Product Browsing & Search
+- ✅ Advanced Product Filters
+- ✅ Autocomplete Search
+- ✅ Add to Cart (AJAX)
+- ✅ Buy Now (Direct Checkout)
+- ✅ Cart Management
+- ✅ Order History
+- ✅ Order Cancellation
+- ✅ Profile Management
+- ✅ Address Management
+- ✅ Password Reset with OTP
+- ✅ Contact Us Page with Map
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 🔐 Authentication Features
+- ✅ User Registration & Login
+- ✅ Admin/Super Admin Login
+- ✅ OTP-based Password Reset
+- ✅ Session Management
+- ✅ Remember Me Functionality
 
-## License
+### 🌍 Address System
+- ✅ Country → State → City Cascading
+- ✅ Powered by [nnjeim/world](https://github.com/nnjeim/world)
+- ✅ 2 API Routes for Dynamic Loading
+- ✅ Real-time Location Updates
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 🎨 Design & UI
+- ✅ Built with Tailwind CSS
+- ✅ Dark Mode Toggle
+- ✅ Smooth Animations
+- ✅ Modern UI/UX
+- ✅ Font Awesome Icons
+
+---
+
+## 🛠️ Tech Stack
+
+### Backend
+- **Framework:** Laravel 12.x
+- **Real-time:** Livewire 3.x
+- **Database:** MySQL
+- **Authentication:** Laravel Sanctum/Breeze
+- **Location Data:** nnjeim/world Package
+
+### Frontend
+- **CSS Framework:** Tailwind CSS 3.x
+- **JavaScript:** Vanilla JS + jQuery (AJAX)
+- **Icons:** Font Awesome 6.x
+- **Build Tool:** Vite
+
+### Admin Dashboard
+- **Technology:** 100% Livewire
+- **No Alpine.js** - Pure Livewire Components
+- **Real-time Updates**
+- **No Page Reload**
+
+### User Frontend
+- **Technology:** Laravel Controllers + AJAX
+- **API Routes:** 2 Routes (State & City)
+- **Dynamic Updates**
+- **Smooth Interactions**
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+- PHP 8.2 or higher
+- Composer
+- Node.js & NPM
+- MySQL/MariaDB
+
+### Steps
+
+1. **Clone the repository**
+```bash
+git clone https://github.com/yourusername/cartify-pro.git
+cd cartify-pro
+```
+
+2. **Install PHP dependencies**
+```bash
+composer install
+```
+
+3. **Install JavaScript dependencies**
+```bash
+npm install
+```
+
+4. **Environment setup**
+```bash
+cp .env.example .env
+```
+
+5. **Generate application key**
+```bash
+php artisan key:generate
+```
+
+6. **Configure database**
+Edit `.env` file:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=cartify_pro
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+7. **Run migrations and seeders**
+```bash
+php artisan migrate
+php artisan db:seed
+```
+
+8. **Create storage link**
+```bash
+php artisan storage:link
+```
+
+9. **Build assets**
+```bash
+npm run build
+```
+
+10. **Start development server**
+```bash
+php artisan serve
+```
+
+Visit: `http://localhost:8000`
+
+---
+
+## 🔑 Default Credentials
+
+### Super Admin
+```
+Email: super@admin.com
+Password: 123456
+```
+
+---
+
+## 📂 Project Structure
+
+```
+cartify-pro/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/          # User-facing controllers
+│   │   ├── Livewire/
+│   │   │   └── Admin/            # Admin Livewire components
+│   │   └── Middleware/
+│   └── Models/
+├── database/
+│   ├── migrations/
+│   └── seeders/
+├── resources/
+│   ├── views/
+│   │   ├── adminV1/                # Admin views (Livewire)
+│   │   ├── Auth/                   # Frontend Auth
+│   │   ├── cart/                   # Cart page
+│   │   ├── category/               # Category page
+│   │   ├── contactus/              # Contact-us page
+│   │   ├── home/                   # Home page
+│   │   ├── layout/                 # Frontend Layout
+│   │   └── livewire/               # livewire
+│   │   └── order/                  # Order page
+│   │   └── product/                # Products page
+│   │   └── profile/                # MY-profile page
+│   ├── css/
+│   └── js/
+├── routes/
+│   ├── web.php                   # User routes
+│   └── admin.php                 # Admin routes
+└── public/
+    └── storage/                  # Uploaded files
+```
+
+---
+
+## 🌐 API Routes
+
+The project includes 2 API routes for dynamic location loading:
+
+```php
+// Get states by country
+GET /api/states/{country_id}
+
+// Get cities by state
+GET /api/cities/{state_id}
+```
+
+**Usage Example:**
+```javascript
+// Load states when country changes
+$.ajax({
+    url: '/api/states/' + countryId,
+    success: function(data) {
+        // Populate state dropdown
+    }
+});
+```
+
+---
+
+## 📦 Third-Party Packages
+
+### Required Packages
+
+1. **nnjeim/world** - Location data (Countries, States, Cities)
+2. **livewire/livewire** - Admin dashboard components
+3. **intervention/image** - Image processing
+
+---
+
+## 🎨 Frontend Architecture
+
+### User Frontend
+- **Controller-based** - Traditional Laravel controllers
+- **AJAX-driven** - No page reloads
+- **jQuery** - For AJAX requests
+- **Tailwind CSS** - Styling
+
+### Admin Dashboard
+- **100% Livewire** - No Alpine.js
+- **Component-based** - Reusable components
+- **Real-time updates** - No page reload
+- **Tailwind CSS** - Consistent styling
+
+---
+
+## 🚀 Key Features Breakdown
+
+### 1. Shopping Cart
+- AJAX Add to Cart - No page reload
+- Cart Sidebar - Quick view
+- Quantity Update - Real-time
+- Remove Items - Instant update
+
+### 2. Checkout System
+- **Two Methods:**
+  - Cart Checkout (Multiple items)
+  - Buy Now (Single item, skip cart)
+- Address Selection
+- Payment Method Selection
+- Order Confirmation
+
+### 3. Product Filtering
+- Category Filter - Multi-select
+- Price Range - Min/Max
+- Stock Status - In stock/Out of stock
+- Sort Options - Price, Name, Latest
+- Search - Autocomplete suggestions
+- Active Filters - Removable chips
+- AJAX Pagination
+
+### 4. Order Management
+- **Order Status:**
+  - Pending (Can cancel)
+  - Confirmed (Processing)
+  - Cancelled (Final)
+- Order History
+- Order Details
+- Cancellation (Pending only)
+
+---
+
+## 🔒 Security Features
+
+- ✅ CSRF Protection
+- ✅ SQL Injection Prevention
+- ✅ XSS Protection
+- ✅ Password Hashing (bcrypt)
+- ✅ Secure Session Management
+- ✅ File Upload Validation
+- ✅ Rate Limiting
+- ✅ OTP-based Password Reset
+
+---
+
+## 🌙 Dark Mode
+
+Full dark mode support across:
+- ✅ User Frontend
+- ✅ Admin Dashboard
+- ✅ Authentication Pages
+- ✅ Profile Pages
+- ✅ Cart & Checkout
+
+---
+
+## 🙏 Acknowledgments
+
+- [Laravel](https://laravel.com) - The PHP Framework
+- [Livewire](https://livewire.laravel.com) - Full-stack framework
+- [Tailwind CSS](https://tailwindcss.com) - CSS Framework
+- [nnjeim/world](https://github.com/nnjeim/world) - Location data package
+- [Font Awesome](https://fontawesome.com) - Icon library
+
+---
+
+## 👨‍💻 Developer
+
+**Your Name**
+- GitHub: [@sahdev-parmar](https://github.com/sahdev-parmar)
+- LinkedIn: [sahdev-paramr](https://linkedin.com/in/sahdev-parmar-023b92352)
+
+<div align="center">
+
+**⭐ Star this repo if you find it useful!**
+
+Made with ❤️ using Laravel & Livewire
+
+</div>
